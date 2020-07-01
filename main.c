@@ -19,10 +19,13 @@ int main(void){
     //==========Driving PWM=================================
     
     // write specfic PWM to the channel registers
-    PCA_writePWM(pcaDriver);
+    PCA_writePWM(pcaDriver, BATCH);
 
-    //==========Terminating=================================
-    PCA_stop(pcaDriver);
+    // Not implemented yet; 
+    // TODO Check with John about specs (requirements for restart)
+    // PCA_stop(pcaDriver);
+    // PCA_restart(pcaDriver);
+    //
     return 0;
 }
 

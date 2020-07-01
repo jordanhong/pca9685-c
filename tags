@@ -4,6 +4,7 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BATCH	PCA9685/PCA9685.h	/^    BATCH=1;$/;"	e	enum:__anon24
 DEBUG_INFO_HID	MCP2221A/lib/libmcp2221.c	18;"	d	file:
 FLASH_SECTION_CHIPSETTINGS	MCP2221A/lib/libmcp2221.c	/^	FLASH_SECTION_CHIPSETTINGS		= 0x00,$/;"	e	enum:__anon2	file:
 FLASH_SECTION_FACTORYSERIAL	MCP2221A/lib/libmcp2221.c	/^	FLASH_SECTION_FACTORYSERIAL		= 0x05,$/;"	e	enum:__anon2	file:
@@ -12,8 +13,8 @@ FLASH_SECTION_USBMANUFACTURER	MCP2221A/lib/libmcp2221.c	/^	FLASH_SECTION_USBMANU
 FLASH_SECTION_USBPRODUCT	MCP2221A/lib/libmcp2221.c	/^	FLASH_SECTION_USBPRODUCT		= 0x03,$/;"	e	enum:__anon2	file:
 FLASH_SECTION_USBSERIAL	MCP2221A/lib/libmcp2221.c	/^	FLASH_SECTION_USBSERIAL			= 0x04,$/;"	e	enum:__anon2	file:
 HID_REPORT_SIZE	MCP2221A/lib/libmcp2221.c	20;"	d	file:
-LED_0_start	PCA9685/LUT_PCA9685_reg.c	4;"	d	file:
-LED_multiplier	PCA9685/LUT_PCA9685_reg.c	5;"	d	file:
+LED_0_start	Testing/LUT_PCA9685_reg.c	4;"	d	file:
+LED_multiplier	Testing/LUT_PCA9685_reg.c	5;"	d	file:
 LIBMCP2221_H_	MCP2221A/lib/libmcp2221.h	10;"	d
 LIB_EXPORT	MCP2221A/lib/libmcp2221.c	23;"	d	file:
 LIB_EXPORT	MCP2221A/lib/libmcp2221.c	25;"	d	file:
@@ -94,20 +95,21 @@ MCP2221_WAKEUP_DISABLED	MCP2221A/lib/libmcp2221.h	/^	MCP2221_WAKEUP_DISABLED = 0
 MCP2221_WAKEUP_ENABLED	MCP2221A/lib/libmcp2221.h	/^	MCP2221_WAKEUP_ENABLED = 0x20	\/**< Enable USB host wakeup *\/$/;"	e	enum:__anon12
 MCP_init	MCP2221A/MCP_start.c	/^int MCP_init(mcp2221_t** myDev){$/;"	f
 NEW_REPORT	MCP2221A/lib/libmcp2221.c	28;"	d	file:
-PCA	PCA9685/PCA9685.c	/^}PCA;$/;"	t	typeref:struct:__anon23	file:
-PCA_calcPWM	PCA9685/PCA9685.c	/^int PCA_calcPWM(PCA* pointerPCA){$/;"	f
+PCA	PCA9685/PCA9685.h	/^}PCA;$/;"	t	typeref:struct:__anon23
+PCA_calcPWM	PCA9685/PCA9685.c	/^int PCA_calcPWM(PCA* pointerPCA, int channelNum, int pwmVal){$/;"	f
 PCA_configDevice	PCA9685/PCA9685.c	/^int PCA_configDevice(PCA* pointerPCA, mcp2221_t** mcp_dev){$/;"	f
-PCA_getDeviceAddr	PCA9685/LUT_device_addr.c	/^uint8_t PCA_getDeviceAddr(int deviceNum){$/;"	f
+PCA_getDeviceAddr	Testing/LUT_device_addr.c	/^uint8_t PCA_getDeviceAddr(int deviceNum){$/;"	f
 PCA_init	PCA9685/PCA9685.c	/^int PCA_init(PCA* pointerPCA){$/;"	f
 PCA_regDeviceAddr	PCA9685/PCA9685.c	/^int PCA_regDeviceAddr(PCA* pointerPCA){$/;"	f
 PCA_regI2cDriver	PCA9685/PCA9685.c	/^int PCA_regI2cDriver(PCA* pointerPCA, mcp2221_t** mcp_dev){$/;"	f
 PCA_reset	PCA9685/PCA9685.c	/^int PCA_reset(PCA* pointerPCA){$/;"	f
-PCA_writePWM	PCA9685/PCA9685.c	/^int PCA_writePWM(PCA* pointerPCA, int MODE){$/;"	f
-PCA_writePWM_2channel	PCA9685/PCA9685.c	/^int PCA_writePWM_2channel(PCA* pointerPCA, channelNum){$/;"	f
+PCA_writePWM	PCA9685/PCA9685.c	/^int PCA_writePWM(PCA* pointerPCA, writePWM_state mode){$/;"	f
+PCA_writePWM_2channel	PCA9685/PCA9685.c	/^int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){$/;"	f
 PCA_writeReg	PCA9685/PCA9685.c	/^int PCA_writeReg(uint8_t* regAddr, uint8_t regData){$/;"	f
 REPORT_SIZE	MCP2221A/lib/libmcp2221.c	19;"	d	file:
 SCL	MCP2221A/lib/libmcp2221.h	/^	uint8_t SCL;	\/**< I2C SCL Value *\/$/;"	m	struct:__anon20
 SDA	MCP2221A/lib/libmcp2221.h	/^	uint8_t SDA;	\/**< I2C SDA Value *\/$/;"	m	struct:__anon20
+SINGLE	PCA9685/PCA9685.h	/^    SINGLE=0;$/;"	e	enum:__anon24
 Sleep	MCP2221A/lib/example.c	12;"	d	file:
 UNUSED	MCP2221A/lib/libmcp2221.c	16;"	d	file:
 USB_CMD_FLASHPASS	MCP2221A/lib/libmcp2221.c	/^	USB_CMD_FLASHPASS	= 0xB2,$/;"	e	enum:__anon1	file:
@@ -129,22 +131,22 @@ USBget	MCP2221A/lib/libmcp2221.c	/^static mcp2221_error USBget(mcp2221_t* device
 USBsend	MCP2221A/lib/libmcp2221.c	/^static mcp2221_error USBsend(mcp2221_t* device, void* data)$/;"	f	file:
 _BSD_SOURCE	MCP2221A/lib/example.c	10;"	d	file:
 addUsbDevList	MCP2221A/lib/libmcp2221.c	/^static void addUsbDevList(int id, struct hid_device_info* dev2)$/;"	f	file:
-address	PCA9685/PCA9685.c	/^    uint8_t address;$/;"	m	struct:__anon23	file:
+address	PCA9685/PCA9685.h	/^    uint8_t address;$/;"	m	struct:__anon23
 calcPWM	PCA9685/PCA9685.c	/^int calcPWM( int PWM, int delay, int width, int* onCount, int* offCount){$/;"	f
 calcPWM	Testing/pwmControl.c	/^int calcPWM(    \/\/ Input $/;"	f
 checkThing	MCP2221A/lib/libmcp2221.c	/^static int checkThing(wchar_t* val1, wchar_t* val2)$/;"	f	file:
 clearReport	MCP2221A/lib/libmcp2221.c	/^static void clearReport(void* report)$/;"	f	file:
 clearUsbDevList	MCP2221A/lib/libmcp2221.c	/^static void clearUsbDevList(void)$/;"	f	file:
 conf	MCP2221A/lib/libmcp2221.h	/^	mcp2221_gpioconf_t conf[MCP2221_GPIO_COUNT];$/;"	m	struct:__anon22
-current_channelNum	PCA9685/PCA9685.c	/^    int current_channelNum; \/\/hold current channel of attention$/;"	m	struct:__anon23	file:
-current_pwmVal	PCA9685/PCA9685.c	/^    int current_pwmVal;        \/\/ hold pwm value for current channel$/;"	m	struct:__anon23	file:
+current_channelNum	PCA9685/PCA9685.h	/^    int current_channelNum; \/\/hold current channel of attention$/;"	m	struct:__anon23
+current_pwmVal	PCA9685/PCA9685.h	/^    int current_pwmVal;        \/\/ hold pwm value for current channel$/;"	m	struct:__anon23
 debug_printf	MCP2221A/lib/libmcp2221.c	31;"	d	file:
 debug_printf	MCP2221A/lib/libmcp2221.c	34;"	d	file:
 debug_puts	MCP2221A/lib/libmcp2221.c	32;"	d	file:
 debug_puts	MCP2221A/lib/libmcp2221.c	35;"	d	file:
 devList	MCP2221A/lib/libmcp2221.c	/^static device_list_t* devList;$/;"	v	file:
 devPath	MCP2221A/lib/libmcp2221.c	/^	char* devPath;			\/\/ Device path (this is unique to each physical device)$/;"	m	struct:device_list_t	file:
-deviceNum	PCA9685/PCA9685.c	/^    int deviceNum;$/;"	m	struct:__anon23	file:
+deviceNum	PCA9685/PCA9685.h	/^    int deviceNum;$/;"	m	struct:__anon23
 device_list_t	MCP2221A/lib/libmcp2221.c	/^struct device_list_t{$/;"	s	file:
 device_list_t	MCP2221A/lib/libmcp2221.c	/^typedef struct device_list_t device_list_t;$/;"	t	typeref:struct:device_list_t	file:
 direction	MCP2221A/lib/libmcp2221.h	/^	mcp2221_gpio_direction_t direction;	\/**< Direction (GPIO mode only) *\/$/;"	m	struct:__anon21
@@ -155,7 +157,8 @@ factorySerial	MCP2221A/lib/libmcp2221.h	/^	char factorySerial[60];					\/**< Fac
 factorySerialLen	MCP2221A/lib/libmcp2221.h	/^	uint8_t factorySerialLen;				\/**< Factory serial length (usually 8) *\/$/;"	m	struct:__anon18
 firmware	MCP2221A/lib/libmcp2221.h	/^	char firmware[2];						\/**< Firmware version *\/$/;"	m	struct:__anon18
 flash_section_t	MCP2221A/lib/libmcp2221.c	/^}flash_section_t;$/;"	t	typeref:enum:__anon2	file:
-getChannelReg	PCA9685/LUT_PCA9685_reg.c	/^int getChannelReg(int chNum, uint8_t* regList){$/;"	f
+getChannelReg	PCA9685/PCA9685.c	/^int getChannelReg(int chNum, uint8_t* regList){$/;"	f
+getChannelReg	Testing/LUT_PCA9685_reg.c	/^int getChannelReg(int chNum, uint8_t* regList){$/;"	f
 getDescriptor	MCP2221A/lib/libmcp2221.c	/^static mcp2221_error getDescriptor(mcp2221_t* device, uint8_t* report, wchar_t* dest, flash_section_t descriptor)$/;"	f	file:
 getDescriptor2	MCP2221A/lib/libmcp2221.c	/^static mcp2221_error getDescriptor2(mcp2221_t* device, wchar_t* buffer, flash_section_t section)$/;"	f	file:
 getResponse	MCP2221A/lib/libmcp2221.c	/^static mcp2221_error getResponse(mcp2221_t* device, uint8_t* report, uint8_t type)$/;"	f	file:
@@ -167,8 +170,8 @@ handle	MCP2221A/lib/libmcp2221.h	/^	void* handle;	\/**< Device handle *\/$/;"	m	
 hardware	MCP2221A/lib/libmcp2221.h	/^	char hardware[2];						\/**< Hardware version *\/$/;"	m	struct:__anon18
 id	MCP2221A/lib/libmcp2221.c	/^	int id;					\/\/ ID$/;"	m	struct:device_list_t	file:
 main	MCP2221A/lib/example.c	/^int main(void)$/;"	f
-main	PCA9685/LUT_PCA9685_reg.c	/^int main(void){$/;"	f
-main	PCA9685/LUT_device_addr.c	/^int main(void){$/;"	f
+main	Testing/LUT_PCA9685_reg.c	/^int main(void){$/;"	f
+main	Testing/LUT_device_addr.c	/^int main(void){$/;"	f
 main	Testing/UserInput-Output/getData.c	/^int main(void) {$/;"	f
 main	Testing/UserInput-Output/writeFile.c	/^int main (){$/;"	f
 main	Testing/pwmControl.c	/^int main(void){$/;"	f
@@ -256,19 +259,19 @@ mcp2221_setInterrupt	MCP2221A/lib/libmcp2221.c	/^mcp2221_error LIB_EXPORT mcp222
 mcp2221_t	MCP2221A/lib/libmcp2221.h	/^}mcp2221_t;$/;"	t	typeref:struct:__anon19
 mcp2221_usbinfo_t	MCP2221A/lib/libmcp2221.h	/^}mcp2221_usbinfo_t;$/;"	t	typeref:struct:__anon18
 mcp2221_wakeup_t	MCP2221A/lib/libmcp2221.h	/^}mcp2221_wakeup_t;$/;"	t	typeref:enum:__anon12
-mcp_dev	PCA9685/PCA9685.c	/^    mcp2221_t** mcp_dev;$/;"	m	struct:__anon23	file:
+mcp_dev	PCA9685/PCA9685.h	/^    mcp2221_t** mcp_dev;$/;"	m	struct:__anon23
 milliamps	MCP2221A/lib/libmcp2221.h	/^	int milliamps;							\/**< Enumerated current limit *\/$/;"	m	struct:__anon18
 mode	MCP2221A/lib/libmcp2221.h	/^	mcp2221_gpio_mode_t mode;			\/**< Mode *\/$/;"	m	struct:__anon21
 next	MCP2221A/lib/libmcp2221.c	/^	device_list_t* next;	\/\/ Next device in list$/;"	m	struct:device_list_t	file:
-offCount	PCA9685/PCA9685.c	/^    int offCount[16];$/;"	m	struct:__anon23	file:
-onCount	PCA9685/PCA9685.c	/^    int onCount[16];$/;"	m	struct:__anon23	file:
+offCount	PCA9685/PCA9685.h	/^    int offCount[16];$/;"	m	struct:__anon23
+onCount	PCA9685/PCA9685.h	/^    int onCount[16];$/;"	m	struct:__anon23
 open	MCP2221A/lib/libmcp2221.c	/^static mcp2221_t* open(char* devPath)$/;"	f	file:
 path	MCP2221A/lib/libmcp2221.h	/^	char* path;		\/**< Device path, used to identify the physical device *\/$/;"	m	struct:__anon19
 pid	MCP2221A/lib/libmcp2221.h	/^	int pid;								\/**< PID *\/$/;"	m	struct:__anon18
 powerSource	MCP2221A/lib/libmcp2221.h	/^	mcp2221_pwrsrc_t powerSource;			\/**< Power source *\/$/;"	m	struct:__anon18
-print_uint_array	PCA9685/LUT_PCA9685_reg.c	/^int print_uint_array(uint8_t* arr, int size){$/;"	f
+print_uint_array	Testing/LUT_PCA9685_reg.c	/^int print_uint_array(uint8_t* arr, int size){$/;"	f
 product	MCP2221A/lib/libmcp2221.h	/^	wchar_t product[MCP2221_STR_LEN];		\/**< Enumerated product descriptor *\/$/;"	m	struct:__anon18
-pwmVal	PCA9685/PCA9685.c	/^    int pwmVal[16];$/;"	m	struct:__anon23	file:
+pwmVal	PCA9685/PCA9685.h	/^    int pwmVal[16];$/;"	m	struct:__anon23
 remoteWakeup	MCP2221A/lib/libmcp2221.h	/^	mcp2221_wakeup_t remoteWakeup;			\/**< Remote USB host wakeup *\/$/;"	m	struct:__anon18
 roundNo	Testing/pwmControl.c	/^int roundNo(float num){ $/;"	f
 saveReport	MCP2221A/lib/libmcp2221.c	/^static int saveReport(mcp2221_t* device, uint8_t* report)$/;"	f	file:
@@ -283,3 +286,4 @@ usb_cmd_t	MCP2221A/lib/libmcp2221.c	/^}usb_cmd_t;$/;"	t	typeref:enum:__anon1	fil
 value	MCP2221A/lib/libmcp2221.h	/^	mcp2221_gpio_value_t value;			\/**< Value (GPIO mode only) *\/$/;"	m	struct:__anon21
 vid	MCP2221A/lib/libmcp2221.h	/^	int vid;								\/**< VID *\/$/;"	m	struct:__anon18
 write2file	Testing/UserInput-Output/writeFile.c	/^int write2file(const char* path, const char * mode, int* Arr, int ArrLen){$/;"	f
+writePWM_state	PCA9685/PCA9685.h	/^} writePWM_state;$/;"	t	typeref:enum:__anon24
