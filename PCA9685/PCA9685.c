@@ -104,26 +104,48 @@ int PCA_writePWM(PCA* pointerPCA, writePWM_state mode){
     return 0;
 }
 
-int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int PWM){
+int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){
     /* Write current PWM to current channel 
      */
     
     // holder for ther 4 reg list
     uint8_t LED_reg_list[4];
+
+    // holder for register addresses and data (all byte-size)
+    uint8_t LED_ON_LOW_REG = 0x00;
+    uint8_t LED_ON_HIGH_REG = 0x00;
+    uint8_t LED_OFF_HIGH_REG = 0x00;
+    uint8_t LED_OFF_LOW_REG = 0x00;
+
+    uint8_t LED_ON_HIGH_VAL = 0x00;
+    uint8_t LED_ON_LOW_VAL = 0x00;
+    uint8_t LED_OFF_LOW_VAL = 0x00;
+    uint8_t LED_OFF_HIGH_VAL = 0x00;
+
+     
     // From LUT, lookup channel register address base on channelNum
     getChannelReg(channelNum, LED_reg_list); 
 
-    // Calculate individual the individual register values
-    // TODO: check datasheet of how this is implemented (how bits are splitted btwn two regs)
-    //       certain bits in the registers are not writable, do we avoid this?
-    /*TODO: figure out how to tell this scope the pwm counter values
-     * maybe call PCA_calcPWM here? since this is not impoerant to the main level
-     *uint8_t LED_ON_LOW_VAL = 0x00;
-     *uint8_t LED_ON_LOW_VAL = 0x00;
-     *uint8_t LED_ON_LOW_VAL = 0x00;
-     *uint8_t LED_ON_LOW_VAL = 0x00;
-     */
+    // Assign register address
+    LED_ON_LOW_REG      = LED_reg_list[0];
+    LED_ON_HIGH_REG     = LED_reg_list[1];     
+    LED_OFF_HIGH_REG    = LED_reg_list[2];    
+    LED_OFF_LOW_REG     = LED_reg_list[3];   
 
+
+    // Calculate individual the individual counter values
+    // Updates array in struct (onCount, offCount)
+    PCA_calcPWM(pointerPCA, channelNum, pwm);
+ 
+    // Assign register values
+    uint8_t LED_ON_LOW_VAL      = (uint8_t)((pointerPCA->onCount)[channelNum-1] & 0xff); // Mask out lower 8 bits
+    uint8_t LED_ON_HIGH_VAL     = (uint8_t)(( (pointerPCA->onCount)[channelNum-1] >> 8) & 0x0f); // Shift bit 9-12 to lower 4 bits and mask out
+    uint8_t LED_OFF_LOW_VAL      = (uint8_t)((pointerPCA->offCount)[channelNum-1] & 0xff); // Mask out lower 8 bits
+    uint8_t LED_OFF_HIGH_VAL     = (uint8_t)(( (pointerPCA->offCount)[channelNum-1] >> 8) & 0x0f); // Shift bit 9-12 to lower 4 bits and mask out
+    // TODO: certain bits in the registers are not writable, check if the writing is legal.
+    // TODO: Interface with MCP driver
+
+   
 
     // Calls PCA_writeReg for each of (LED_ON_LOW, LED_ON_HIGH, LED_OFF_LOW, LED_OFF_HIGH)
 
@@ -139,16 +161,18 @@ int PCA_writeReg(uint8_t* regAddr, uint8_t regData){
     // Call MCP driver to write data via I2C protocol
 }
 
-int PCA_calcPWM(PCA* pointerPCA){
+int PCA_calcPWM(PCA* pointerPCA, int channelNum, int pwmVal){
     /* Move PWM control code here
      * (calculate on and off counter values)
      */
     int delay = 0;
     int width = 4096;
-    int* onCounterAddr = (pointerPCA->onCount)+ sizeof(int)*(pointerPCA->channelNum-1);
-    int* offCounterAddr = (pointerPCA->offCount)+ sizeof(int)*(pointerPCA->channelNum-1);
+    // The struct contains 2 16-int array (one for onCount and the other for offcount)
+    // Calculate address of specific index based on channel number and size of integers
+    int* onCounterAddr = (pointerPCA->onCount)+ sizeof(int)*(channelNum-1);
+    int* offCounterAddr = (pointerPCA->offCount)+ sizeof(int)*(channelNum-1);
 
-    calcPWM((pointerPCA->pwmVal), delay, width, onCounterAddr, offCounterAddr);
+    calcPWM(pwmVal, delay, width, onCounterAddr, offCounterAddr);
     return 0;
 }
 
