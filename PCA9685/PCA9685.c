@@ -1,14 +1,4 @@
 #include "PCA9685.h"
-typedef struct{
-    int deviceNum;
-    uint8_t address;
-    int pwmVal[16];
-    int onCount[16];
-    int offCount[16];
-    int current_channelNum; //hold current channel of attention
-    int current_pwmVal;        // hold pwm value for current channel
-    mcp2221_t** mcp_dev;
-}PCA;
 
 int PCA_configDevice(PCA* pointerPCA, mcp2221_t** mcp_dev){
 
@@ -91,16 +81,30 @@ int PCA_reset(PCA* pointerPCA){
     return 0;
 }
 
-int PCA_writePWM(PCA* pointerPCA, int MODE){
+int PCA_writePWM(PCA* pointerPCA, writePWM_state mode){
     /*
-     * MODE 0: write "current_pwmVal" to "current_channelNum", requires updated current_channelNum and current_pwmVal.
-     * MODE 1: check through all channels and write specific PWM values to channels.
-     * TODO: implement switch cases
+     * MODE SINGLE: write "current_pwmVal" to "current_channelNum", requires updated current_channelNum and current_pwmVal.
+     * MODE BATCH: check through all channels and write specific PWM values to channels.
      */
+    switch(mode){
+        case (SINGLE):
+            PCA_writePWM_2channel(pointerPCA, pointerPCA->channelNum, pointerPCA->PWM);
+        case (BATCH):
+            int i = 0;
+            int pwm = 0;
+            for (i=0;i<16;i++){
+                // check through all 16 channels in the chip
+                // if PWM is non-zero,write to channel
+                pwm = (pointerPCA->pwmVal)[i];
+                if (pwm!= 0){
+                    PCA_writePWM_2channel(pointerPCA, (i+1), pwm);
+                }
+            }
+    }
     return 0;
 }
 
-int PCA_writePWM_2channel(PCA* pointerPCA, channelNum){
+int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int PWM){
     /* Write current PWM to current channel 
      */
     
@@ -111,6 +115,7 @@ int PCA_writePWM_2channel(PCA* pointerPCA, channelNum){
 
     // Calculate individual the individual register values
     // TODO: check datasheet of how this is implemented (how bits are splitted btwn two regs)
+    //       certain bits in the registers are not writable, do we avoid this?
     /*TODO: figure out how to tell this scope the pwm counter values
      * maybe call PCA_calcPWM here? since this is not impoerant to the main level
      *uint8_t LED_ON_LOW_VAL = 0x00;
@@ -179,5 +184,53 @@ int calcPWM( int PWM, int delay, int width, int* onCount, int* offCount){
     return 0;
 }
 
+int getChannelReg(int chNum, uint8_t* regList){
+    /*
+     * Paramater    Type        Function                        Range
+     * ==============================================================
+     * chNum        int         channel number                  1-16 
+     * regList      uint8_t*    array to store 4 reg # (8 bit)  4 (size) 
+     *
+     */
+    
+    // Function writes out the 4 register # to regList 
+    // in the order of:     LED#_ON_L, LED#_OFF_H, LED#_ON_L, LED#_OFF_H 
+    // Each register # represents a 12 bit register
+    int lowBound    = 1;
+    int upBound     = 16;
+    
+    /*LED   startReg    endReg
+     *
+     * 0    6           9
+     * 1    10  
+     * 2    14
+     * |
+     * 15   66
+     * n    n*4+6       n*4+9
+     */
+    
+    if ( (chNum<lowBound) || (chNum>upBound)){
+        // printf("%s", "Channel number not in range\n");
+        return 0;
+    }
 
+    else{
+        // Get starting register value
+        // Convert to unsigned byte
+        int i = 0;
+        int len = 4;
+        int reg = 0;
 
+        reg = (chNum-1)*LED_multiplier + LED_0_start;
+        printf("Starting reg: %d\n", reg);
+       
+        for (i=0;i<len;i++){
+            // cask int to unsigned byte
+            uint8_t regByte = 0x00;
+            // printf("Writing array: %d\n", reg);
+            regByte = (uint8_t) (reg & 0xff);
+            regList[i] = regByte;
+            reg++;
+        }
+    }
+}
