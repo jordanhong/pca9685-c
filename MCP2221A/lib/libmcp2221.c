@@ -16,7 +16,7 @@
 #define UNUSED(var) ((void)(var))
 
 #define DEBUG_INFO_HID	0
-#define REPORT_SIZE		MCP2221_REPORT_SIZE
+#define REPORT_SIZE		MCP2221_REPORT_SIZE // 64, accd header file
 #define HID_REPORT_SIZE	REPORT_SIZE + 1 // + 1 for report ID, which is always 0 for MCP2221
 
 #ifdef _WIN32
@@ -1347,12 +1347,16 @@ mcp2221_error LIB_EXPORT mcp2221_i2cWrite(mcp2221_t* device, int address, void* 
 	}
 
 	NEW_REPORT(report);
+    // report is array of bytes, and has format of:
+    // command mode (0x90) for I2C write , LOW byte of data lenght, HIGH byte length, address, data
+    // In our use case with PCA9685, data len always = 1 (byte), hence report will only be of length 5*sizeof(uint8_t)
 	mcp2221_error res;
 	if((res = setReport(device, report, cmd)) != MCP2221_SUCCESS)
 		return res;
 	report[1] = len;
 	report[2] = len>>8;
 	report[3] = address;
+    // memcpy() doesn’t check for overflow or \0, len takes in numBytes
 	memcpy(&report[4], data, len);
 	res = doTransaction(device, report);
 	return res;
