@@ -13,7 +13,9 @@ FLASH_SECTION_USBMANUFACTURER	MCP2221A/lib/libmcp2221.c	/^	FLASH_SECTION_USBMANU
 FLASH_SECTION_USBPRODUCT	MCP2221A/lib/libmcp2221.c	/^	FLASH_SECTION_USBPRODUCT		= 0x03,$/;"	e	enum:__anon2	file:
 FLASH_SECTION_USBSERIAL	MCP2221A/lib/libmcp2221.c	/^	FLASH_SECTION_USBSERIAL			= 0x04,$/;"	e	enum:__anon2	file:
 HID_REPORT_SIZE	MCP2221A/lib/libmcp2221.c	20;"	d	file:
+LED_0_start	PCA9685/PCA9685.h	17;"	d
 LED_0_start	Testing/LUT_PCA9685_reg.c	4;"	d	file:
+LED_multiplier	PCA9685/PCA9685.h	18;"	d
 LED_multiplier	Testing/LUT_PCA9685_reg.c	5;"	d	file:
 LIBMCP2221_H_	MCP2221A/lib/libmcp2221.h	10;"	d
 LIB_EXPORT	MCP2221A/lib/libmcp2221.c	23;"	d	file:
@@ -105,7 +107,7 @@ PCA_regI2cDriver	PCA9685/PCA9685.c	/^int PCA_regI2cDriver(PCA* pointerPCA, mcp22
 PCA_reset	PCA9685/PCA9685.c	/^int PCA_reset(PCA* pointerPCA){$/;"	f
 PCA_writePWM	PCA9685/PCA9685.c	/^int PCA_writePWM(PCA* pointerPCA, writePWM_state mode){$/;"	f
 PCA_writePWM_2channel	PCA9685/PCA9685.c	/^int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){$/;"	f
-PCA_writeReg	PCA9685/PCA9685.c	/^int PCA_writeReg(uint8_t* regAddr, uint8_t regData){$/;"	f
+PCA_writeReg	PCA9685/PCA9685.c	/^int PCA_writeReg(PCA* pointerPCA, uint8_t* regAddr, uint8_t regData){$/;"	f
 REPORT_SIZE	MCP2221A/lib/libmcp2221.c	19;"	d	file:
 SCL	MCP2221A/lib/libmcp2221.h	/^	uint8_t SCL;	\/**< I2C SCL Value *\/$/;"	m	struct:__anon20
 SDA	MCP2221A/lib/libmcp2221.h	/^	uint8_t SDA;	\/**< I2C SDA Value *\/$/;"	m	struct:__anon20
