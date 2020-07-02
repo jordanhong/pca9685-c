@@ -14,6 +14,10 @@ typedef enum{
     BATCH=1;
 } writePWM_state;
 
+#define LED_0_start 6
+#define LED_multiplier 4
+
+
 int PCA_configDevice(PCA* pointerPCA, mcp2221_t** mcp_dev);
 int PCA_regDeviceAddr(PCA* pointerPCA);
 int PCA_regI2cDriver(PCA* pointerPCA, mcp2221_t** mcp_dev);

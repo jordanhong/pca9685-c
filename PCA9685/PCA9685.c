@@ -138,14 +138,15 @@ int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){
     PCA_calcPWM(pointerPCA, channelNum, pwm);
  
     // Assign register values
+    /* According to the datasheet, each register is byte-sized. 
+     * However, not all bits are writable, i.e LED_ON_H[7:5] is reserved
+     * Here we pass in zeros for the reserved bits, but the zeros will not be written in.
+     */
     uint8_t LED_ON_LOW_VAL      = (uint8_t)((pointerPCA->onCount)[channelNum-1] & 0xff); // Mask out lower 8 bits
     uint8_t LED_ON_HIGH_VAL     = (uint8_t)(( (pointerPCA->onCount)[channelNum-1] >> 8) & 0x0f); // Shift bit 9-12 to lower 4 bits and mask out
     uint8_t LED_OFF_LOW_VAL      = (uint8_t)((pointerPCA->offCount)[channelNum-1] & 0xff); // Mask out lower 8 bits
     uint8_t LED_OFF_HIGH_VAL     = (uint8_t)(( (pointerPCA->offCount)[channelNum-1] >> 8) & 0x0f); // Shift bit 9-12 to lower 4 bits and mask out
-    // TODO: certain bits in the registers are not writable, check if the writing is legal.
-    // TODO: Interface with MCP driver
 
-   
 
     // Calls PCA_writeReg for each of (LED_ON_LOW, LED_ON_HIGH, LED_OFF_LOW, LED_OFF_HIGH)
 
@@ -157,9 +158,12 @@ int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){
     return 0;
 }
 
-int PCA_writeReg(uint8_t* regAddr, uint8_t regData){
-    // Call MCP driver to write data via I2C protocol
+int PCA_writeReg(PCA* pointerPCA, uint8_t* regAddr, uint8_t regData){
+    // TODO: Include proxy functions to test in absence of hardware
+    // mcp2221_error mcp2221_i2cWrite(mcp2221_t* device, int address, void* data, int numByte, mcp2221_i2crw_t type);
+    MCP_i2cWrite((pointerPCA->mcp_dev), regAddr, &regData, 1, MCP2221_I2CRW_NORMAL); 
 }
+
 
 int PCA_calcPWM(PCA* pointerPCA, int channelNum, int pwmVal){
     /* Move PWM control code here
