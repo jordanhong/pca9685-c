@@ -31,6 +31,9 @@ July 09
 - Implemented MCP2221 dll proprietary library. (Not tested as to many errors and cannot compile)
 - Integrated modules such that program can compile without errors, using proxy functions. 
 - The MCP2221 dll library takes care of the I2C bus specifics, i.e. to write to a slave, one simply invoke:\
-   `
-Mcp2221_I2cWrite(void* handle, unsigned int bytesToWrite, unsigned char slaveAddress, unsigned char use7bitAddress, unsigned char* i2cTxData)
-    `
+   `Mcp2221_I2cWrite(void* handle, unsigned int bytesToWrite, unsigned char slaveAddress, unsigned char use7bitAddress, unsigned char* i2cTxData)`
+- **TODO**: 
+    - More test cases, esp. edge cases
+    - error checking/ guarding
+    - PWM with different delay scenarios
+    - Restart (write to all 0)
