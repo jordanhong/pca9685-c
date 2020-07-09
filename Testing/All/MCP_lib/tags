@@ -1,0 +1,116 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BATCH	PCA9685.h	/^    BATCH=1,$/;"	e	enum:__anon1
+CALLING_CONVENTION	mcp2221_dll_um.h	38;"	d
+E_ERR_ADDRESS_NACK	mcp2221_dll_um.h	171;"	d
+E_ERR_BLOCK_SIZE_MISMATCH	mcp2221_dll_um.h	182;"	d
+E_ERR_CLOSE_FAILED	mcp2221_dll_um.h	160;"	d
+E_ERR_CMD_FAILED	mcp2221_dll_um.h	132;"	d
+E_ERR_CONNECTION_ALREADY_OPENED	mcp2221_dll_um.h	158;"	d
+E_ERR_COPY_RX_DATA_FAILED	mcp2221_dll_um.h	175;"	d
+E_ERR_COPY_TX_DATA_FAILED	mcp2221_dll_um.h	177;"	d
+E_ERR_DESTINATION_TOO_SMALL	mcp2221_dll_um.h	141;"	d
+E_ERR_DEVICE_NOT_FOUND	mcp2221_dll_um.h	151;"	d
+E_ERR_FLASH_WRITE_FAILED	mcp2221_dll_um.h	143;"	d
+E_ERR_FLASH_WRITE_PROTECTED	mcp2221_dll_um.h	137;"	d
+E_ERR_I2C_BUSY	mcp2221_dll_um.h	168;"	d
+E_ERR_I2C_READ_ERROR	mcp2221_dll_um.h	170;"	d
+E_ERR_INPUT_TOO_LARGE	mcp2221_dll_um.h	142;"	d
+E_ERR_INTERNAL_BUFFER_TOO_SMALL	mcp2221_dll_um.h	154;"	d
+E_ERR_INVALID_ADDRESS	mcp2221_dll_um.h	167;"	d
+E_ERR_INVALID_BYTE_NUMBER	mcp2221_dll_um.h	166;"	d
+E_ERR_INVALID_HANDLE	mcp2221_dll_um.h	133;"	d
+E_ERR_INVALID_PARAMETER	mcp2221_dll_um.h	134;"	d
+E_ERR_INVALID_PASS	mcp2221_dll_um.h	135;"	d
+E_ERR_INVALID_PEC	mcp2221_dll_um.h	180;"	d
+E_ERR_INVALID_SPEED	mcp2221_dll_um.h	164;"	d
+E_ERR_MALLOC	mcp2221_dll_um.h	144;"	d
+E_ERR_NO_EFFECT	mcp2221_dll_um.h	179;"	d
+E_ERR_NO_SUCH_INDEX	mcp2221_dll_um.h	149;"	d
+E_ERR_NULL	mcp2221_dll_um.h	139;"	d
+E_ERR_OPEN_DEVICE_ERROR	mcp2221_dll_um.h	156;"	d
+E_ERR_PASSWORD_LIMIT_REACHED	mcp2221_dll_um.h	136;"	d
+E_ERR_RAW_RX_COPYFAILED	mcp2221_dll_um.h	187;"	d
+E_ERR_RAW_TX_COPYFAILED	mcp2221_dll_um.h	186;"	d
+E_ERR_RAW_TX_TOO_LARGE	mcp2221_dll_um.h	185;"	d
+E_ERR_SPEED_NOT_SET	mcp2221_dll_um.h	165;"	d
+E_ERR_TIMEOUT	mcp2221_dll_um.h	172;"	d
+E_ERR_TOO_MANY_RX_BYTES	mcp2221_dll_um.h	173;"	d
+E_ERR_UNKOWN_ERROR	mcp2221_dll_um.h	131;"	d
+E_NO_ERR	mcp2221_dll_um.h	130;"	d
+FLASH_SETTINGS	mcp2221_dll_um.h	194;"	d
+INTERRUPT_BOTH_EDGES	mcp2221_dll_um.h	224;"	d
+INTERRUPT_NEGATIVE_EDGE	mcp2221_dll_um.h	223;"	d
+INTERRUPT_NONE	mcp2221_dll_um.h	221;"	d
+INTERRUPT_POSITIVE_EDGE	mcp2221_dll_um.h	222;"	d
+LED_0_start	PCA9685.h	21;"	d
+LED_multiplier	PCA9685.h	22;"	d
+MCP2221_DLL_UM_API	mcp2221_dll_um.h	29;"	d
+MCP2221_DLL_UM_API	mcp2221_dll_um.h	31;"	d
+MCP2221_DLL_UM_API	mcp2221_dll_um.h	35;"	d
+MCP2221_GPDIR_INPUT	mcp2221_dll_um.h	215;"	d
+MCP2221_GPDIR_OUTPUT	mcp2221_dll_um.h	216;"	d
+MCP2221_GPFUNC_IO	mcp2221_dll_um.h	200;"	d
+MCP2221_GPVAL_HIGH	mcp2221_dll_um.h	218;"	d
+MCP2221_GPVAL_LOW	mcp2221_dll_um.h	219;"	d
+MCP2221_GP_ADC	mcp2221_dll_um.h	208;"	d
+MCP2221_GP_CLOCK_OUT	mcp2221_dll_um.h	203;"	d
+MCP2221_GP_DAC	mcp2221_dll_um.h	211;"	d
+MCP2221_GP_IOC	mcp2221_dll_um.h	213;"	d
+MCP2221_GP_LED_I2C	mcp2221_dll_um.h	205;"	d
+MCP2221_GP_LED_UART_RX	mcp2221_dll_um.h	207;"	d
+MCP2221_GP_LED_UART_TX	mcp2221_dll_um.h	210;"	d
+MCP2221_GP_SSPND	mcp2221_dll_um.h	202;"	d
+MCP2221_GP_USBCFG	mcp2221_dll_um.h	204;"	d
+MCP2221_PASS_CHANGE	mcp2221_dll_um.h	237;"	d
+MCP2221_PASS_DISABLE	mcp2221_dll_um.h	236;"	d
+MCP2221_PASS_ENABLE	mcp2221_dll_um.h	235;"	d
+MCP2221_USB_BUS	mcp2221_dll_um.h	231;"	d
+MCP2221_USB_REMOTE	mcp2221_dll_um.h	233;"	d
+MCP2221_USB_SELF	mcp2221_dll_um.h	232;"	d
+MCP_checkLibrary	MCP2221A.c	/^int MCP_checkLibrary(wchar_t* libVer){$/;"	f
+MCP_getDevices	MCP2221A.c	/^int MCP_getDevices(void){$/;"	f
+MCP_i2cWrite	MCP2221A.c	/^int MCP_i2cWrite(PCA* pointerPCA, uint8_t regAddr, uint8_t regData){$/;"	f
+MCP_i2cWrite_proxy	PCA9685.c	/^int MCP_i2cWrite_proxy(PCA* pointerPCA, uint8_t regAddr,uint8_t regData){$/;"	f
+MCP_init	MCP2221A.c	/^int MCP_init(void** device){$/;"	f
+MCP_openDevice_index	MCP2221A.c	/^int MCP_openDevice_index(int index, void** device){$/;"	f
+NO_CHANGE	mcp2221_dll_um.h	197;"	d
+PCA	MCP2221A.c	/^typedef struct PCA PCA;$/;"	t	typeref:struct:PCA	file:
+PCA	PCA9685.h	/^struct PCA{$/;"	s
+PCA	PCA9685.h	/^typedef struct PCA PCA;$/;"	t	typeref:struct:PCA
+PCA_calcPWM	PCA9685.c	/^int PCA_calcPWM(PCA* pointerPCA, int channelNum, int pwmVal){$/;"	f
+PCA_getDeviceAddr	PCA9685.c	/^uint8_t PCA_getDeviceAddr(int deviceNum){$/;"	f
+PCA_getState	PCA9685.c	/^int PCA_getState(PCA*pointerPCA){$/;"	f
+PCA_init	PCA9685.c	/^int PCA_init(PCA** pointerPCA){$/;"	f
+PCA_reset	PCA9685.c	/^int PCA_reset(PCA* pointerPCA){$/;"	f
+PCA_writePWM	PCA9685.c	/^int PCA_writePWM(PCA* pointerPCA, writePWM_state mode){$/;"	f
+PCA_writePWM_2channel	PCA9685.c	/^int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){$/;"	f
+PCA_writeReg	PCA9685.c	/^int PCA_writeReg(PCA* pointerPCA, uint8_t regAddr, uint8_t regData){$/;"	f
+PID	MCP2221A.c	15;"	d	file:
+RUNTIME_SETTINGS	mcp2221_dll_um.h	195;"	d
+SINGLE	PCA9685.h	/^    SINGLE=0,$/;"	e	enum:__anon1
+VID	MCP2221A.c	14;"	d	file:
+VREF_1024V	mcp2221_dll_um.h	227;"	d
+VREF_2048V	mcp2221_dll_um.h	228;"	d
+VREF_4096V	mcp2221_dll_um.h	229;"	d
+VREF_VDD	mcp2221_dll_um.h	226;"	d
+address	PCA9685.h	/^    uint8_t address;$/;"	m	struct:PCA
+calcPWM	PCA9685.c	/^int calcPWM( int PWM, int delay, int width, int* onCount, int* offCount){$/;"	f
+check_fileExists	io.c	/^int check_fileExists(const char * filename){$/;"	f
+current_channelNum	PCA9685.h	/^    int current_channelNum; \/\/hold current channel of attention$/;"	m	struct:PCA
+current_pwmVal	PCA9685.h	/^    int current_pwmVal;        \/\/ hold pwm value for current channel$/;"	m	struct:PCA
+deviceNum	PCA9685.h	/^    int deviceNum;$/;"	m	struct:PCA
+getChannelReg	PCA9685.c	/^int getChannelReg(int chNum, uint8_t* regList){$/;"	f
+getUserInput	io.c	/^int getUserInput(   const char* msg, int* dataAddr, int lowBound, int upBound){$/;"	f
+main	main.c	/^int main(void){$/;"	f
+mcp_dev	PCA9685.h	/^    void** mcp_dev;$/;"	m	struct:PCA
+offCount	PCA9685.h	/^    int offCount[16];$/;"	m	struct:PCA
+onCount	PCA9685.h	/^    int onCount[16];$/;"	m	struct:PCA
+pwmVal	PCA9685.h	/^    int pwmVal[16];$/;"	m	struct:PCA
+roundNo	PCA9685.c	/^int roundNo(float num){ $/;"	f
+writeCommand_2file	io.c	/^int writeCommand_2file(const char* path, uint8_t* report, int report_len ){$/;"	f
+writePWM_state	PCA9685.h	/^} writePWM_state;$/;"	t	typeref:enum:__anon1
