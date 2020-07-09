@@ -18,3 +18,19 @@ July 02
 - **TODO**: 
     1. Test functions from top level. Note for self: need to deal with functions reporting errors now for lack of hardware.
     2. Implement [PCA9685] functions: global restart (reset?), write to all mode, sleep mode.
+
+July 07
+
+- Checked libmcp2221 library: not fully implemented, poor completion and hard to test.
+- **TODO**:
+    1. Read MCP2221 dll User guide.
+    2. Implement into MCP class
+
+July 09
+
+- Implemented MCP2221 dll proprietary library. (Not tested as to many errors and cannot compile)
+- Integrated modules such that program can compile without errors, using proxy functions. 
+- The MCP2221 dll library takes care of the I2C bus specifics, i.e. to write to a slave, one simply invoke:\\
+   `
+Mcp2221_I2cWrite(void* handle, unsigned int bytesToWrite, unsigned char slaveAddress, unsigned char use7bitAddress, unsigned char* i2cTxData)
+    `
