@@ -38,3 +38,30 @@ July 09
     - error checking/ guarding
     - PWM with different delay scenarios
     - Restart (write to all 0)
+
+July 10
+
+- Re-structured code such that now we have 4 core master functions:
+    1. `int PCA_master_init(int numDevices);` \
+        Called at beginning, return array of (numDevices) PCA structs
+    2. `int PCA_master_writePWM(writePWM_state mode);` \
+        Asks for input and set specific device/channel/PWM \
+        Two modes:   BATCH  (writes to all registers according to array)\
+                     SINGLE (writes to specific device/channels without changing existing modes)
+    3. `int PCA_master_restart();` \
+        Reset all values to 0.
+    4. `int PCA_master_getState();`  \
+        Prints out all active channels information from each device. 
+
+  
+- Divided `PCA9685.c`: functions are now in categories:
+    1. Master functions (`PCA_master_*`): master functions called by the top level UI. Usually passed in array of 7 drivers (PCA structs), has control over 7 drivers.
+    2. PCA driver functions (`PCA_*`): driver-functions, only has knowledge of single driver. 
+    3. I2C and register level functions: takes care of I2C, writing to registers, and proxy for writing to registers in the absence of driver hardware to test with. Users should change the functions here should a different I2C driver be used.  
+    4. Auxiliary functions: Miscellaneous functions. 
+
+- **TODO**:
+    - More test cases, esp. edge cases
+    - error checking/ guarding
+    - PWM with different delay scenarios
+ 
