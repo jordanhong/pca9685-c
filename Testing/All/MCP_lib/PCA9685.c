@@ -7,14 +7,7 @@
 //#include "MCP2221A.c"
 
 /******************* Master functions (Global perspective)****************************/
-int PCA_master_init(int numDevices);                 // called at beginning, return array of (numDevices) PCA structs
-int PCA_master_writePWM(writePWM_state mode);        // ask for input and set specific device/channel/PWM
-                                                     // Two modes:   BATCH  (writes to all registers according to array)
-                                                     //              SINGLE (writes to specific device/channels without changing existing modes)
-int PCA_master_restart();                            // 1) call reset on individual drivers; 2) Calls setPWM to 0 on batch mode
-int PCA_master_getState();                           // Gets state of device; asks which device
-
-int PCA_init(int numDevices, PCA** arrayHeader){
+int PCA_master_init(int numDevices, PCA** arrayHeader){
     // Allocate memory
     (*arrayHeader) = (PCA*) malloc (numDevices*sizeof(PCA));
     if ((*arrayHeader)==NULL){
@@ -25,23 +18,24 @@ int PCA_init(int numDevices, PCA** arrayHeader){
     //  1. Condigure device number and label
     //  2. initialize values
     int deviceNum = 0;
+    PCA* pointerPCA = NULL;
     for (deviceNum = 0; deviceNum<numDevices; deviceNum++){
-        PCA* pointerPCA = (*arrayHeader) + deviceNum;
+        pointerPCA = (*arrayHeader) + deviceNum;
         pointerPCA->deviceNum = deviceNum;
-        pointerPCA->address = PCA_getDeviceAddr((*pointerPCA)->deviceNum);
-        PCA_reset(pcaPointer);
+        pointerPCA->address = PCA_getDeviceAddr(pointerPCA->deviceNum);
+        PCA_reset(pointerPCA);
     }
     return 0;
 }
 
-int PCA_master_writePWM(PCA** master , writePWM_state mode){
+int PCA_master_writePWM(PCA* master , writePWM_state mode){
 
+    int deviceNum=0;
+    int channelNum=0;
+    int pwmVal=0;
     switch(mode){
-        case(SINGLE):
+        case(SINGLE):;
             /*TODO: out a while loop here and ask until completion*/
-            int deviceNum=0;
-            int channelNum=0;
-            int pwmVal=0;
             const char* m0="Please enter device number. ";
             const char* m1="Please enter channel number. ";
             const char* m2="Please enter PWM value. ";
@@ -59,62 +53,62 @@ int PCA_master_writePWM(PCA** master , writePWM_state mode){
                    deviceNum, channelNum, pwmVal);
 
             // Update struct and write registers
-            PCA_setPWM(master[deviceNum-1], channelNum, pwmVal);
-            PCA_writePWM_2channel(master[deviceNum-1], channelNum);
+            PCA* pointerPCA;
+            pointerPCA = master + (deviceNum-1);
+            PCA_setPWM(pointerPCA, channelNum, pwmVal);
+            PCA_writePWM_2channel(pointerPCA, channelNum, pwmVal);
             break;
 
-        case(BATCH):
+        case(BATCH):;
             /* Assumes all struct is updated, writes to registers according to struct info */
-            int deviceNum = 0;
-            int i = 0;
-            int pwm = 0;
-            for (deviceNum=0;deviceNum<7;deviceNum++){
-                PCA* pointerPCA = master[deviceNum-1];
-                for (i=0;i<16;i++){
+            int i=0;
+            int ch = 0;
+            int totalDevice=2;
+            // TODO:change 2 to 7 here
+            for (i=0;i<totalDevice;i++){
+                PCA* pointerPCA = master + i;
+                for (ch=0;ch<16;ch++){
                     // check through all 16 channels in the chip
                     // if PWM is non-zero,write to channel
-                    pwm = (pointerPCA->pwmVal)[i];
-                    if (pwm!= 0){
-                        PCA_writePWM_2channel(pointerPCA, (i+1), pwm);
+                    pwmVal = (pointerPCA->pwmVal)[ch];
+                    if (pwmVal!= 0){
+                        printf("device %d, channel %d, has PWM value %d\n", i+1, ch+1, pwmVal);
+                        PCA_writePWM_2channel(pointerPCA, (ch+1), pwmVal);
                     }
                 }
             }
             break;
     }
+    return 0;
 
 }
 
-int PCA_master_restart(PCA** master, int numDevices){
+int PCA_master_restart(PCA* master, int numDevices){
     int deviceNum = 0;
     for (deviceNum=0;deviceNum<numDevices;deviceNum++){
-        PCA* pointerPCA= master[deviceNum];
+        PCA* pointerPCA = master + deviceNum;
         PCA_reset(pointerPCA);
-        PCA_master_writePWM(master, BATCH);
     }
+    PCA_master_writePWM(master, BATCH);
     return 0;
 }
 
-int PCA_master_getState(PCA** master, int numDevices){
-    int deviceNum = 0;
-    for (deviceNum=0;deviceNum<numDevices;deviceNum++){
-        PCA* pointerPCA= master[deviceNum];
+int PCA_master_getState(PCA* headPCA, int numDevices){
+    int i = 0;
+    for (i=0;i<numDevices;i++){
+        PCA* pointerPCA= headPCA + i;
         PCA_getState(pointerPCA);
+        printf("==============================\n");
     }
     return 0;
 }
  
 
 /******************** PCA Driver functions********************************************/
-int PCA_reset(PCA* pointerPCA); // resets information stored in the PCA struct
-int PCA_getState(PCA* pointerPCA); // Gets state of specific device
-int PCA_setPWM(PCA* pointerPCA, int channel, int pwm); // Calculates pwm/counter values and update struct
-int PCA_writePWM_2channel(PCa* pointerPCA, int channel); // writes PWM to channel registers based on values
-int PCA_calcPWM(PCA* pointerPCA, int channelNum, int pwmVal); //caculates counters, called by setPWM; TODO(merge this function elsewhere?)
-
 int PCA_reset(PCA* pointerPCA){
-    memset( (pointerPCA->offCount), 0, sizeof(pointerPCA->offCount) );
-    memset( (pointerPCA->onCount), 0, sizeof(pointerPCA->onCount) );
-    memset( (pointerPCA->pwmVal), 0, sizeof(pointerPCA->pwmVal) );
+    zero( (pointerPCA->offCount), 16);
+    zero( (pointerPCA->onCount), 16);
+    zero( (pointerPCA->pwmVal), 16 );
     pointerPCA-> mcp_dev= NULL;
 
     return 0;
@@ -145,7 +139,7 @@ int PCA_setPWM(PCA* pointerPCA, int channel, int pwm){
     
     // Update pwmVal array value
     (pointerPCA->pwmVal)[channel-1] = pwm;
-    PCA_calcPWM(pointerPCA, channelNum, pwm);
+    PCA_calcPWM(pointerPCA, channel, pwm);
     return 0;
 }
 
@@ -169,7 +163,7 @@ int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){
 
      
     // From LUT, lookup channel register address base on channelNum
-    getChannelReg(channelNum, LED_reg_list); 
+    PCA_getChannelReg(channelNum, LED_reg_list); 
 
     // Assign register address
     LED_ON_LOW_REG      = LED_reg_list[0];
@@ -217,7 +211,6 @@ int PCA_calcPWM(PCA* pointerPCA, int channelNum, int pwmVal){
 
 
 /********************I2C and Register level Functions****************************************************/
-
 int PCA_regI2cDriver(PCA* pointerPCA, void** mcp_dev){
     pointerPCA->mcp_dev = mcp_dev;
     return 0;
@@ -245,8 +238,7 @@ int MCP_i2cWrite_proxy(PCA* pointerPCA, uint8_t regAddr,uint8_t regData){
     return 0;
 }
 
-/********************* Auxilary functions*********************************************/
-
+/********************* Auxiliary functions*********************************************/
 uint8_t PCA_getDeviceAddr(int deviceNum){
     /* 
      * Device Address Format
@@ -280,7 +272,7 @@ uint8_t PCA_getDeviceAddr(int deviceNum){
     
 }
 
-int getChannelReg(int chNum, uint8_t* regList){
+int PCA_getChannelReg(int chNum, uint8_t* regList){
     /*
      * Paramater    Type        Function                        Range
      * ==============================================================
@@ -357,3 +349,14 @@ int calcPWM( int PWM, int delay, int width, int* onCount, int* offCount){
 int roundNo(float num){ 
     return (int)(num < 0 ? num - 0.5 : num + 0.5); 
 } 
+
+int zero(int* array, int size){
+    if (array==NULL) {
+        return -1;
+    }
+    int i=0;
+    for (i=0;i<size;i++){
+        array[i]=0;
+    }
+    return 0;
+}

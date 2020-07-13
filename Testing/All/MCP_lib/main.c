@@ -9,7 +9,11 @@ int main(void){
     //MCP_init(mcp_dev);
  
     PCA* pcaDriver=NULL;
-    PCA_init(&pcaDriver); /* Asks for user input: deviceNum, channelNum, PWM*/
+    PCA_master_init(2, &pcaDriver);
+    PCA_master_writePWM(pcaDriver, SINGLE);
+    PCA_master_getState(pcaDriver, 2);
+    PCA_master_restart(pcaDriver, 2);
+    PCA_master_getState(pcaDriver, 2);
     // PCA_regI2cDriver(pcaDriver, mcp_dev); 
     
     //
@@ -17,8 +21,8 @@ int main(void){
     ////==========Driving PWM=================================
     //
     //// write specfic PWM to the channel registers
-    PCA_writePWM(pcaDriver, SINGLE);
-    PCA_getState(pcaDriver);
+    // PCA_writePWM(pcaDriver, SINGLE);
+    // PCA_getState(pcaDriver);
     // Not implemented yet; 
     // TODO     
     // PCA_stop(pcaDriver);
