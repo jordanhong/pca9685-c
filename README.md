@@ -65,3 +65,20 @@ July 10
     - error checking/ guarding
     - PWM with different delay scenarios
  
+July 13
+
+- Compiled and tested Top level functions with valgrind. Code is working
+- **TODO**:
+    - More test cases, esp. edge cases
+    - error checking/ guarding
+    - PWM with different delay scenarios
+
+July 14
+- Implemented error checking for top master functions. Tested. 
+- Program now asks if user is finished configuring after each input. Allows for multi-channel configuration in SINGLE mode.
+- **TODO**
+    - Edge cases
+    - Different PWM delay
+    - Check the remaining three function groups. 
+    - Complete documentation. 
+
