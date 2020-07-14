@@ -83,11 +83,16 @@ PCA	MCP2221A.c	/^typedef struct PCA PCA;$/;"	t	typeref:struct:PCA	file:
 PCA	PCA9685.h	/^struct PCA{$/;"	s
 PCA	PCA9685.h	/^typedef struct PCA PCA;$/;"	t	typeref:struct:PCA
 PCA_calcPWM	PCA9685.c	/^int PCA_calcPWM(PCA* pointerPCA, int channelNum, int pwmVal){$/;"	f
+PCA_getChannelReg	PCA9685.c	/^int PCA_getChannelReg(int chNum, uint8_t* regList){$/;"	f
 PCA_getDeviceAddr	PCA9685.c	/^uint8_t PCA_getDeviceAddr(int deviceNum){$/;"	f
 PCA_getState	PCA9685.c	/^int PCA_getState(PCA*pointerPCA){$/;"	f
-PCA_init	PCA9685.c	/^int PCA_init(PCA** pointerPCA){$/;"	f
+PCA_master_getState	PCA9685.c	/^int PCA_master_getState(PCA* headPCA, int numDevices){$/;"	f
+PCA_master_init	PCA9685.c	/^int PCA_master_init(int numDevices, PCA** arrayHeader){$/;"	f
+PCA_master_restart	PCA9685.c	/^int PCA_master_restart(PCA* master, int numDevices){$/;"	f
+PCA_master_writePWM	PCA9685.c	/^int PCA_master_writePWM(PCA* master , writePWM_state mode){$/;"	f
+PCA_regI2cDriver	PCA9685.c	/^int PCA_regI2cDriver(PCA* pointerPCA, void** mcp_dev){$/;"	f
 PCA_reset	PCA9685.c	/^int PCA_reset(PCA* pointerPCA){$/;"	f
-PCA_writePWM	PCA9685.c	/^int PCA_writePWM(PCA* pointerPCA, writePWM_state mode){$/;"	f
+PCA_setPWM	PCA9685.c	/^int PCA_setPWM(PCA* pointerPCA, int channel, int pwm){$/;"	f
 PCA_writePWM_2channel	PCA9685.c	/^int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){$/;"	f
 PCA_writeReg	PCA9685.c	/^int PCA_writeReg(PCA* pointerPCA, uint8_t regAddr, uint8_t regData){$/;"	f
 PID	MCP2221A.c	15;"	d	file:
@@ -104,7 +109,6 @@ check_fileExists	io.c	/^int check_fileExists(const char * filename){$/;"	f
 current_channelNum	PCA9685.h	/^    int current_channelNum; \/\/hold current channel of attention$/;"	m	struct:PCA
 current_pwmVal	PCA9685.h	/^    int current_pwmVal;        \/\/ hold pwm value for current channel$/;"	m	struct:PCA
 deviceNum	PCA9685.h	/^    int deviceNum;$/;"	m	struct:PCA
-getChannelReg	PCA9685.c	/^int getChannelReg(int chNum, uint8_t* regList){$/;"	f
 getUserInput	io.c	/^int getUserInput(   const char* msg, int* dataAddr, int lowBound, int upBound){$/;"	f
 main	main.c	/^int main(void){$/;"	f
 mcp_dev	PCA9685.h	/^    void** mcp_dev;$/;"	m	struct:PCA
@@ -114,3 +118,4 @@ pwmVal	PCA9685.h	/^    int pwmVal[16];$/;"	m	struct:PCA
 roundNo	PCA9685.c	/^int roundNo(float num){ $/;"	f
 writeCommand_2file	io.c	/^int writeCommand_2file(const char* path, uint8_t* report, int report_len ){$/;"	f
 writePWM_state	PCA9685.h	/^} writePWM_state;$/;"	t	typeref:enum:__anon1
+zero	PCA9685.c	/^int zero(int* array, int size){$/;"	f

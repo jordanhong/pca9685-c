@@ -6,9 +6,11 @@
 #include "io.c"
 //#include "MCP2221A.c"
 
+#define TOTAL_PCA_NUM 7
 /******************* Master functions (Global perspective)****************************/
 int PCA_master_init(int numDevices, PCA** arrayHeader){
-    // Allocate memory
+    
+    // Allocate memory for an array of PCA devices
     (*arrayHeader) = (PCA*) malloc (numDevices*sizeof(PCA));
     if ((*arrayHeader)==NULL){
             printf("Maloc unsuccessful!\n");
@@ -29,43 +31,60 @@ int PCA_master_init(int numDevices, PCA** arrayHeader){
 }
 
 int PCA_master_writePWM(PCA* master , writePWM_state mode){
-
     int deviceNum=0;
     int channelNum=0;
     int pwmVal=0;
+
+    if (master==NULL){
+        printf("Null device address,aborting.\n");
+        return -1;
+    }
+
     switch(mode){
         case(SINGLE):;
-            /*TODO: out a while loop here and ask until completion*/
+            // Write to individual channel registers
+            // Continuously asks user the device-channel-pwm, until user quits
+
+            char status = 'n'; // char to store status (Y/n);
+            int  done = 0;
+
             const char* m0="Please enter device number. ";
             const char* m1="Please enter channel number. ";
             const char* m2="Please enter PWM value. ";
+            const char* m3="Configuration complete ? [Y/n]";
             
-            // Configure device no, current channel and pwm
-            getUserInput(m0, &(deviceNum) , 1, 7);
-            getUserInput(m1, &(channelNum), 1, 16);
-            getUserInput(m2, &(pwmVal), 1, 100);
-            
-            // Confirmation
-            printf("Please confirm the selection:\n"
-                   "device number: %d \n"
-                   "channel number: %d \n"
-                   "PWM value: %d \n ",
-                   deviceNum, channelNum, pwmVal);
+            while (!done){
+                // Ask for user input
+                getUserInput(m0, &(deviceNum) , 1, 7);
+                getUserInput(m1, &(channelNum), 1, 16);
+                getUserInput(m2, &(pwmVal), 1, 100);
+                
+                // Confirmation
+                printf("Please confirm the selection:\n"
+                       "device number: %d \n"
+                       "channel number: %d \n"
+                       "PWM value: %d \n ",
+                       deviceNum, channelNum, pwmVal);
 
-            // Update struct and write registers
-            PCA* pointerPCA;
-            pointerPCA = master + (deviceNum-1);
-            PCA_setPWM(pointerPCA, channelNum, pwmVal);
-            PCA_writePWM_2channel(pointerPCA, channelNum, pwmVal);
+                // Update struct and write registers
+                PCA* pointerPCA;
+                pointerPCA = master + (deviceNum-1);
+                PCA_setPWM(pointerPCA, channelNum, pwmVal);
+                PCA_writePWM_2channel(pointerPCA, channelNum, pwmVal);
+                
+                // Ask user if done
+                char_getUserInput(m3, &status);
+                done = (int) (status=='Y');
+
+            }
             break;
 
         case(BATCH):;
             /* Assumes all struct is updated, writes to registers according to struct info */
             int i=0;
             int ch = 0;
-            int totalDevice=2;
-            // TODO:change 2 to 7 here
-            for (i=0;i<totalDevice;i++){
+            //for (i=0;i<TOTAL_PCA_NUM;i++){
+            for (i=0;i<TOTAL_PCA_NUM;i++){
                 PCA* pointerPCA = master + i;
                 for (ch=0;ch<16;ch++){
                     // check through all 16 channels in the chip
@@ -78,6 +97,10 @@ int PCA_master_writePWM(PCA* master , writePWM_state mode){
                 }
             }
             break;
+
+        default:
+            printf("Invalid mode. Writing mode must be either SINGLE or BATCH. Aborting.\n");
+            return -1;
     }
     return 0;
 
@@ -103,7 +126,6 @@ int PCA_master_getState(PCA* headPCA, int numDevices){
     return 0;
 }
  
-
 /******************** PCA Driver functions********************************************/
 int PCA_reset(PCA* pointerPCA){
     zero( (pointerPCA->offCount), 16);
@@ -119,7 +141,7 @@ int PCA_getState(PCA*pointerPCA){
         printf("Null pointer !\n");
         return -1;
     }
-    printf("Device No: %d. Device address: 0x%x. \n", pointerPCA->deviceNum, pointerPCA->address);
+    printf("Device No: %d. Device address: 0x%x. \n", (pointerPCA->deviceNum+1), pointerPCA->address);
     printf("Active channel  |  PWM  | onCount | offCount\n");
     int i = 0;
     for (i=0;i<16;i++){
@@ -208,7 +230,6 @@ int PCA_calcPWM(PCA* pointerPCA, int channelNum, int pwmVal){
     calcPWM(pwmVal, delay, width, onCounterAddr, offCounterAddr);
     return 0;
 }
-
 
 /********************I2C and Register level Functions****************************************************/
 int PCA_regI2cDriver(PCA* pointerPCA, void** mcp_dev){
