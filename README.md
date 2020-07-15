@@ -82,3 +82,14 @@ July 14
     - Check the remaining three function groups. 
     - Complete documentation. 
 
+July 15
+- Revised and fixed MCP I2C writing. Matched proxy I2C write arguments with real i2c functions. 
+- PWM convert: Added support for cases when off occurs before on in a period. 
+- Current implementation sets delay to be 10% in-function. 
+- Tested output commands in proxy, confirmed same output as per the PCA9685 datasheet (page 16, LED Output and PWM control)
+- Tested writing to edge devices and channels (device 1 and 7, channel 1 and 16)
+- **TODO**
+    - Check whether need to add support to ask for delay, or is delay always 0. (Would this create a RS latch metastable effect? check)
+    - Current restart is implemented by manually writing 0s. Confirm whether this works, and necessity to use designated pins for global control. 
+    - (Potential) Support configuration of different delays from UI. 
+
