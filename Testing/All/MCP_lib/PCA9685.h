@@ -40,7 +40,8 @@ int PCA_calcPWM(PCA* pointerPCA, int channelNum, int pwmVal); //caculates counte
 
 int PCA_regI2cDriver(PCA* pointerPCA, void** mcp_dev);
 int PCA_writeReg(PCA* pointerPCA, uint8_t regAddr, uint8_t regData);
-int MCP_i2cWrite_proxy(PCA* pointerPCA, uint8_t regAddr,uint8_t regData);
+int MCP_i2cWrite_proxy(PCA* pointerPCA, unsigned int numBytes, unsigned char* data);
+int MCP_i2cWrite(PCA* pointerPCA, unsigned int numBytes, unsigned char* data);
 
 /********************* Auxiliary functions*********************************************/
 uint8_t PCA_getDeviceAddr(int deviceNum);

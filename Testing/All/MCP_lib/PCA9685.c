@@ -87,13 +87,12 @@ int PCA_master_writePWM(PCA* master , writePWM_state mode){
             for (i=0;i<TOTAL_PCA_NUM;i++){
                 PCA* pointerPCA = master + i;
                 for (ch=0;ch<16;ch++){
-                    // check through all 16 channels in the chip
-                    // if PWM is non-zero,write to channel
+                    // Traverse through all 16 channels in the chip
+                    // Write corresponding PWM to channel, regardless of values
                     pwmVal = (pointerPCA->pwmVal)[ch];
-                    if (pwmVal!= 0){
-                        printf("device %d, channel %d, has PWM value %d\n", i+1, ch+1, pwmVal);
-                        PCA_writePWM_2channel(pointerPCA, (ch+1), pwmVal);
-                    }
+                    printf("device %d, channel %d, has PWM value %d\n", i+1, ch+1, pwmVal);
+                    PCA_writePWM_2channel(pointerPCA, (ch+1), pwmVal);
+                    
                 }
             }
             break;
@@ -128,6 +127,11 @@ int PCA_master_getState(PCA* headPCA, int numDevices){
  
 /******************** PCA Driver functions********************************************/
 int PCA_reset(PCA* pointerPCA){
+    if (pointerPCA==NULL){
+        printf("Null device pointer! Aborting.\n");
+        return -1;
+    }
+
     zero( (pointerPCA->offCount), 16);
     zero( (pointerPCA->onCount), 16);
     zero( (pointerPCA->pwmVal), 16 );
@@ -138,7 +142,7 @@ int PCA_reset(PCA* pointerPCA){
 
 int PCA_getState(PCA*pointerPCA){
     if (pointerPCA==NULL){
-        printf("Null pointer !\n");
+        printf("Null device pointer! Aborting.\n");
         return -1;
     }
     printf("Device No: %d. Device address: 0x%x. \n", (pointerPCA->deviceNum+1), pointerPCA->address);
@@ -158,7 +162,11 @@ int PCA_setPWM(PCA* pointerPCA, int channel, int pwm){
      * Calculates values for counters etc.
      * Does not write to the device registers yet
      */
-    
+    if (pointerPCA==NULL){
+        printf("Null device pointer! Aborting.\n");
+        return -1;
+    }
+   
     // Update pwmVal array value
     (pointerPCA->pwmVal)[channel-1] = pwm;
     PCA_calcPWM(pointerPCA, channel, pwm);
@@ -168,7 +176,11 @@ int PCA_setPWM(PCA* pointerPCA, int channel, int pwm){
 int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){
     /* Write current PWM to current channel 
      */
-    
+    if (pointerPCA==NULL){
+        printf("Null device pointer! Aborting.\n");
+        return -1;
+    }
+
     // holder for the 4 reg list
     uint8_t LED_reg_list[4];
 
@@ -190,8 +202,8 @@ int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){
     // Assign register address
     LED_ON_LOW_REG      = LED_reg_list[0];
     LED_ON_HIGH_REG     = LED_reg_list[1];     
-    LED_OFF_HIGH_REG    = LED_reg_list[2];    
-    LED_OFF_LOW_REG     = LED_reg_list[3];   
+    LED_OFF_LOW_REG    = LED_reg_list[2];    
+    LED_OFF_HIGH_REG     = LED_reg_list[3];   
 
 
 
@@ -217,10 +229,8 @@ int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){
 }
 
 int PCA_calcPWM(PCA* pointerPCA, int channelNum, int pwmVal){
-    /* Move PWM control code here
-     * (calculate on and off counter values)
-     */
-    int delay = 0;
+
+    int delay = 10;
     int width = 4096;
     // The struct contains 2 16-int array (one for onCount and the other for offcount)
     // Calculate address of specific index based on channel number and size of integers
@@ -238,27 +248,49 @@ int PCA_regI2cDriver(PCA* pointerPCA, void** mcp_dev){
 }
 
 int PCA_writeReg(PCA* pointerPCA, uint8_t regAddr, uint8_t regData){
+    /*
+     * @param regAddr   8 bit register address
+     * @param regData   8 bit register Tx data
+     */
 
-    /* Usage: MCP2221_DLL_UM_API int CALLING_CONVENTION Mcp2221_I2cWrite(void* handle, unsigned int bytesToWrite, unsigned char slaveAddress, unsigned char use7bitAddress, unsigned char* i2cTxData);*/
-    MCP_i2cWrite_proxy(pointerPCA, regAddr, regData);
-    //MCP_i2cWrite(pointerPCA, regAddr, regData); 
+    // Create unsigned char array to store i2c Tx data (regAddr, regData)
+    unsigned char i2cTxData [2];
+    i2cTxData[0] = (unsigned char) regAddr; // cask uint8_t to unsiged char
+    i2cTxData[1] = (unsigned char) regData;
+    
+    // Write to PCA via MCP
+    //MCP_i2cWrite(pointerPCA, (unsigned int)2 , i2cTxData);
+    MCP_i2cWrite_proxy(pointerPCA, (unsigned int)2 , i2cTxData);
+
     return 0;
 }
 
-int MCP_i2cWrite_proxy(PCA* pointerPCA, uint8_t regAddr,uint8_t regData){
+int MCP_i2cWrite_proxy(PCA* pointerPCA, unsigned int numBytes, unsigned char* data){
     uint8_t report[5];    
     //report[0] = (uint8_t) *(pointerPCA->mcp_dev); // driver handle
     report[0] = 0x00; // driver handle
-    report[1] = 1;                   // bytes to write (const 1)
+    report[1] = (uint8_t)numBytes;                   // bytes to write (const 1)
     report[2] = pointerPCA->address; // slave address
-    report[3] = regAddr;             // register address
-    report[4] = regData;             // register data
+    report[3] = (uint8_t) data[0];             // register address
+    report[4] = (uint8_t) data[1];             // register data
 
     const char* path = "proxy_MCP.txt";
     writeCommand_2file(path, report, 5);
     return 0;
 }
 
+int MCP_i2cWrite(PCA* pointerPCA, unsigned int numBytes, unsigned char* data){
+    unsigned char use7bitAddress;
+    // For 7 bit address (pointerPCA->address has form 0x01[A5:A0],
+    // Enable 7 bit addresss config
+    use7bitAddress = 0x01; 
+
+    /* Usage: MCP2221_DLL_UM_API int CALLING_CONVENTION Mcp2221_I2cWrite(void* handle, unsigned int bytesToWrite, unsigned char slaveAddress, unsigned char use7bitAddress, unsigned char* i2cTxData);*/
+
+    // Mcp2221_I2cWrite( (pointerPCA->mcp_dev), numBytes, (pointerPCA->address), use7bitAddress, data);
+    return 0;
+}
+    
 /********************* Auxiliary functions*********************************************/
 uint8_t PCA_getDeviceAddr(int deviceNum){
     /* 
@@ -360,8 +392,10 @@ int calcPWM( int PWM, int delay, int width, int* onCount, int* offCount){
     // Assign count values
     // note: counter starts at 0, so subtract 1 from counter values
     int onCounterVal= ((roundNo(delayTime) - 1) >0)? (roundNo(delayTime) - 1):0;
-    int offCounterVal = roundNo(delayTime + onTime - 1);
-    printf("Calculated onCount is %d and offCount is %d\n", roundNo(delayTime) - 1, roundNo(delayTime + onTime - 1));
+    int offCounterVal = roundNo(delayTime) + roundNo(onTime) - 1;
+    if (offCounterVal>width) offCounterVal-= width;
+    printf("On Counter is set to: %d. Off counter is set to: %d\n", onCounterVal, offCounterVal);
+
     *onCount = onCounterVal; 
     *offCount = offCounterVal; 
     return 0;
