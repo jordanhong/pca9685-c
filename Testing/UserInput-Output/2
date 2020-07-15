@@ -24,14 +24,24 @@ int main(void) {
 }
 
 int char_getUserInput(const char* msg, char* dataAddr){
-    //if ( (*dataAddr)=='Y') printf ("You entered Y\n");
-    //else if ( (*dataAddr)=='n') printf ("You entered n\n");
-    //else printf("Not Y or n.\n");
+    char comp='Y';
     printf("%s", msg);
-    scanf(" %c", dataAddr);
-    while( ((*dataAddr)!='Y') &&  ((*dataAddr)!='n')){
-        printf("Please re-enter [Y/n]: ");
-        scanf(" %c", dataAddr);
+    scanf("%c", dataAddr);
+    // Error check input
+    //while ( (*dataAddr)!= 'Y' || (*dataAddr)!='n' ) {
+    //    printf("Please re-enter [Y/n]: ");
+    //    scanf("%c", dataAddr);
+    //}
+    if ( (*dataAddr)=='Y') printf ("You entered Y\n");
+    else if ( (*dataAddr)=='n') printf ("You entered n\n");
+    else printf("Not Y or n.\n");
+    
+    printf("You entered %c which has value %d\n", *dataAddr, *dataAddr);
+    printf("%d\n",(int)( (*dataAddr) =='Y'));
+
+    while( (*dataAddr)!='Y'){
+        printf("PLEASE ENTER Y: ");
+        scanf("%c", dataAddr);
     }
     return 0;
 }

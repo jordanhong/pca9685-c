@@ -1,13 +1,29 @@
 #include <stdio.h>
-#include <stdint.h>
-int check_fileExists(const char * filename);
-int write2file(const char* path, const char * mode, int* Arr, int ArrLen);
-int writeCommand_2file(const char* path, uint8_t* report, int report_len );
+#include "io.h"
+int getUserInput(const char* msg, int* dataAddr, int lowBound, int upBound){
 
-int main (){
-    const char* path = "proxy_MCP.txt";
-    uint8_t report[5] = {0xF5, 0x04, 29, 0x01, 0x00};
-    writeCommand_2file(path, report, 5);
+    printf("%s", msg);
+    printf("The value should range between %d and %d: ", lowBound, upBound);
+    scanf("%d", dataAddr);
+    // Error check input
+    while ( ((*dataAddr)<lowBound) || ((*dataAddr)>upBound) ) {
+        printf("Entered value not in range [%d, %d], please re-enter: ", lowBound, upBound);
+        scanf("%d", dataAddr);
+    }
+
+    return 0;
+}
+
+int char_getUserInput(const char* msg, char* dataAddr){
+
+    printf("%s", msg);
+    scanf("%s", dataAddr);
+    // Error check input
+    while ( (*dataAddr)!= 'Y' || (*dataAddr)!='n' ) {
+        printf("Please re-enter [Y/n]: ");
+        scanf("%s", dataAddr);
+    }
+
     return 0;
 }
 int check_fileExists(const char * filename){
@@ -18,14 +34,14 @@ int check_fileExists(const char * filename){
 
     /* try to open file to read */
     FILE *file;
-    file = fopen (filename, "r");
-
+    file = fopen(filename, "r");
     if (file){
         fclose(file);
         return 1;
     }
     return 0;
 }
+
 int writeCommand_2file(const char* path, uint8_t* report, int report_len ){
     /* report is the I2C package: (uint8_t) [commandMode, len_low_byte, len_high_byte, slave address, data]
      */
@@ -38,7 +54,7 @@ int writeCommand_2file(const char* path, uint8_t* report, int report_len ){
     if (!fileExists){
        fp = fopen(path, "w");
        fprintf (fp, "Proxy for I2C Write\n");
-       fprintf (fp, "Command Mode / len LOW BYTE / len HIGH BYTE / SLAVE addr / DATA \n");
+       fprintf (fp, "Driver handle/ len / SLAVE addr / REG addr/ REG data \n");
        fclose(fp);
     }
 
@@ -50,22 +66,4 @@ int writeCommand_2file(const char* path, uint8_t* report, int report_len ){
     fclose (fp);
     return 0;
 
-}
-
-
-int write2file(const char* path, const char * mode, int* Arr, int ArrLen){
-    FILE * fp;
-    int i;
- 
-    /* open the file for writing*/
-    fp = fopen (path, mode);
-  
-    /* write 10 lines of text into the file stream*/
-    for(i = 0; i < ArrLen;i++){
-        fprintf (fp, "This is line %d\n", Arr[i]);
-    }
-  
-    /* close the file*/  
-    fclose (fp);
-    return 0;
 }
