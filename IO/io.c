@@ -1,14 +1,31 @@
 #include <stdio.h>
 #include "io.h"
-int getUserInput(   const char* msg, int* dataAddr, int lowBound, int upBound){
+int getUserInput(const char* msg, int* dataAddr, int lowBound, int upBound){
 
     printf("%s", msg);
     printf("The value should range between %d and %d: ", lowBound, upBound);
-
     scanf("%d", dataAddr);
+    // Error check input
+    while ( ((*dataAddr)<lowBound) || ((*dataAddr)>upBound) ) {
+        printf("Entered value not in range [%d, %d], please re-enter: ", lowBound, upBound);
+        scanf("%d", dataAddr);
+    }
+
     return 0;
 }
 
+int char_getUserInput(const char* msg, char* dataAddr){
+    //if ( (*dataAddr)=='Y') printf ("You entered Y\n");
+    //else if ( (*dataAddr)=='n') printf ("You entered n\n");
+    //else printf("Not Y or n.\n");
+    printf("%s", msg);
+    scanf(" %c", dataAddr);
+    while( ((*dataAddr)!='Y') &&  ((*dataAddr)!='n')){
+        printf("Please re-enter [Y/n]: ");
+        scanf(" %c", dataAddr);
+    }
+    return 0;
+}
 int check_fileExists(const char * filename){
    /*
      * Check if a file exist using fopen() function
@@ -17,7 +34,8 @@ int check_fileExists(const char * filename){
 
     /* try to open file to read */
     FILE *file;
-    if (file = fopen(filename, "r")){
+    file = fopen(filename, "r");
+    if (file){
         fclose(file);
         return 1;
     }
@@ -36,7 +54,7 @@ int writeCommand_2file(const char* path, uint8_t* report, int report_len ){
     if (!fileExists){
        fp = fopen(path, "w");
        fprintf (fp, "Proxy for I2C Write\n");
-       fprintf (fp, "Command Mode / len LOW BYTE / len HIGH BYTE / SLAVE addr / DATA \n");
+       fprintf (fp, "Driver handle/ len / SLAVE addr / REG addr/ REG data \n");
        fclose(fp);
     }
 

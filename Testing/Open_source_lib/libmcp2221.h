@@ -849,6 +849,17 @@ mcp2221_error mcp2221_i2cDivider(mcp2221_t* device, int i2cdiv);
 */
 mcp2221_error mcp2221_i2cReadPins(mcp2221_t* device, mcp2221_i2cpins_t* pins);
 
+// Added definitions
+// TODO: added documentation
+static mcp2221_error setReport(mcp2221_t* device, uint8_t* report, uint8_t type);
+static mcp2221_error doTransaction(mcp2221_t* device, uint8_t* report);
+static mcp2221_error USBsend(mcp2221_t* device, void* data);
+static mcp2221_error doUSBsend(hid_device* handle, void* data);
+static mcp2221_error getResponse(mcp2221_t* device, uint8_t* report, uint8_t type);
+static mcp2221_error USBget(mcp2221_t* device, void* data)
+static mcp2221_error doUSBget(hid_device* handle, void* data)
+static mcp2221_error setReport(mcp2221_t* device, uint8_t* report, uint8_t type)
+static void clearReport(void* report)
 #if defined(__cplusplus)
 }
 #endif

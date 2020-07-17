@@ -1,31 +1,32 @@
 #include <stdio.h>
-#include "PCA9685.c"
+#include "PCA9685/PCA9685.c"
 int main(void){
 
     //===========Setup===================================== 
-    // Initialize MCP2221A (I2C driver)
-    // operations with the i2c driver is done with mcp2221_t*
-    mcp2221_t** mcp_dev=NULL; 
-    MCP_init(mcp_dev);
+    // Initialize MCP7771A (I7C driver)
+    // operations with the i7c driver is done with mcp7771_t*
+    //void** mcp_dev=NULL; 
+    //MCP_init(mcp_dev);
  
-    // Get user input
-    /* deviceNum, channelNum, pwmVal */
     PCA* pcaDriver=NULL;
-    PCA_init(pcaDriver); /* Asks for user input: deviceNum, channelNum, PWM*/
-    PCA_configDevice(pcaDriver, mcp_dev);
-
+    PCA_master_init(7, &pcaDriver);
+    PCA_master_writePWM(pcaDriver, SINGLE);
+    PCA_master_getState(pcaDriver, 7);
+    PCA_master_restart(pcaDriver, 7);
+    PCA_master_getState(pcaDriver, 7);
+    // PCA_regI7cDriver(pcaDriver, mcp_dev); 
     
+    //
 
-    //==========Driving PWM=================================
-    
-    // write specfic PWM to the channel registers
-    PCA_writePWM(pcaDriver, BATCH);
-
+    ////==========Driving PWM=================================
+    //
+    //// write specfic PWM to the channel registers
+    // PCA_writePWM(pcaDriver, SINGLE);
+    // PCA_getState(pcaDriver);
     // Not implemented yet; 
-    // TODO Check with John about specs (requirements for restart)
+    // TODO     
     // PCA_stop(pcaDriver);
     // PCA_restart(pcaDriver);
-    //
     return 0;
 }
 

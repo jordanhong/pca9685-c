@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-#include "hidapi.h"
+#include "hid.c"
 #include "libmcp2221.h"
 
 #define UNUSED(var) ((void)(var))
@@ -1355,7 +1355,7 @@ mcp2221_error LIB_EXPORT mcp2221_i2cWrite(mcp2221_t* device, int address, void* 
 		return res;
 	report[1] = len;
 	report[2] = len>>8;
-	report[3] = address;
+	report[3] = (uint8_t)address;
     // memcpy() doesn’t check for overflow or \0, len takes in numBytes
 	memcpy(&report[4], data, len);
 	res = doTransaction(device, report);

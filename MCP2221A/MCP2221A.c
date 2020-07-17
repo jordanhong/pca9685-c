@@ -1,80 +1,81 @@
 #include <stdio.h>
-#include "MCP2221A.h"
-#include "libmcp2221.c"
-#include "file.c"
-int MCP_init(mcp2221_t** myDev){
+#include <stddef.h>
+#include <stdint.h>
+#include "mcp2221_dll_um.h"
 
-	puts("Starting!");
+typedef struct PCA PCA;
+int MCP_init(void** device);
+int MCP_checkLibrary(wchar_t* libVer);
+int MCP_getDevices(void);
+int MCP_openDevice_index(int index, void** device);
+int MCP_i2cWrite(PCA* pointerPCA, uint8_t regAddr, uint8_t regData);
 
-	mcp2221_init();
-	
-	// Get list of MCP2221s
-	printf("Looking for devices... ");
-	int count = mcp2221_find(MCP2221_DEFAULT_VID, MCP2221_DEFAULT_PID, NULL, NULL, NULL);
-	printf("found %d devices\n", count);
+/* Dummy addresses */
+#define VID 0xff
+#define PID 0xff
+int MCP_init(void** device){
 
-	// Open whatever device was found first
-	printf("Opening device... ");
-	// mcp2221_t* myDev = mcp2221_open(); //here myDev is of type mcp2221_t*
-	*myDev = mcp2221_open(); // here myDev is of type mcp2221_t**
+    // Library Version
+    wchar_t* libVer=NULL;
+    MCP_checkLibrary(libVer);
 
-	if(!(*myDev))
-	{
-		mcp2221_exit();
-		puts("No MCP2221s found");
-		getchar();
-		return -1;
-	}
-	puts("done");
+    // Discover Devices
+    MCP_getDevices();
+
+    // Open device
+    MCP_openDevice_index(0, device);
+
     return 0;
 
-	
+
 }
 
-int MCP_i2cWrite(mcp2221_t* device, int address, void* data, int numByte, mcp2221_i2crw_t type){
+int MCP_checkLibrary(wchar_t* libVer){
 
-    mcp2221_i2cWrite((pointerPCA->mcp_dev), regAddr, &regData, 1, MCP2221_I2CRW_NORMAL);
+    int rVer = Mcp2221_GetLibraryVersion(libVer);
+    if (rVer==0){
+        printf("Library Version: %ls\n", libVer);
+        return 0;
+    }
+    else{
+        int error = Mcp2221_GetLastError();
+        printf("Version not found, error: %d\n",  error);
+        return -1;
+    }
+}
+int MCP_getDevices(void){
+    //TODO: VID,PID
+    int NumOfDev= 0;
+    Mcp2221_GetConnectedDevices(VID, PID, &NumOfDev);
+    if(NumOfDev == 0){
+        printf("No MCP2221 devices connected\n");
+    }
+    else{
+        printf("Number of devices found: %d\n", NumOfDev);
+    }
     return 0;
+
+}
+int MCP_openDevice_index(int index, void** device){
+    *device = Mcp2221_OpenByIndex(VID, PID, index);
+    if((*device)==NULL){
+        printf("Connection successful\n");       
+        return 0;
+    }
+    else{
+        int error = Mcp2221_GetLastError();
+        printf("Error message is %d\n", error);
+        return -1;
+    }
 }
 
-int MCP_i2cWrite_proxy(mcp2221_t* device, int address, void* data, int numByte, mcp2221_i2crw_t type){
-    // TODO: Have to ensure that device 1=NULL when testing
-    /
-    const char* path = "proxy_MCP.txt";
-    const char* mode = "w";
-    uint8_t report[5];
-
-    // Copied from mcp2221_i2cWrite 
-	usb_cmd_t cmd;
-	switch(type)
-	{
-		case MCP2221_I2CRW_NORMAL:
-			cmd = USB_CMD_I2CWRITE;
-			break;
-		case MCP2221_I2CRW_REPEATED:
-			cmd = USB_CMD_I2CWRITE_REPEATSTART;
-			break;
-		case MCP2221_I2CRW_NOSTOP:
-			cmd = USB_CMD_I2CWRITE_NOSTOP;
-			break;
-		default:
-			cmd = USB_CMD_I2CWRITE;
-			break;
-	}
-	NEW_REPORT(report);
-    // report is array of bytes, and has format of:
-    // command mode (0x90) for I2C write , LOW byte of data lenght, HIGH byte length, address, data
-    // In our use case with PCA9685, data len always = 1 (byte), hence report will only be of length 5*sizeof(uint8_t)
-    int len = numByte;
-	mcp2221_error res;
-	if((res = setReport(device, report, cmd)) != MCP2221_SUCCESS)
-		return res;
-	report[1] = len;
-	report[2] = len>>8;
-	report[3] = address;
-	memcpy(&report[4], data, len);
-	
-    writeCommand_2file(path, report, len);
+int MCP_i2cWrite(PCA* pointerPCA, uint8_t regAddr, uint8_t regData){
+    /* 
+     * func declaration:
+     * MCP2221_DLL_UM_API int CALLING_CONVENTION Mcp2221_I2cWrite(void* handle, unsigned int bytesToWrite, unsigned char slaveAddress, unsigned char use7bitAddress, unsigned char* i2cTxData);
+     */
+ 
+    Mcp2221_I2cWrite(*(pointerPCA->mcp_dev), 1, pointerPCA->address, (unsigned char)regAddr, &regData);
     return 0;
 }
 

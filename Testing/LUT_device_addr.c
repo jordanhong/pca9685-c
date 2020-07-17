@@ -12,7 +12,8 @@ int main(void){
 }
 
 uint8_t PCA_getDeviceAddr(int deviceNum){
-    /* Device Address Format
+    /* 
+     * Device Address Format
      * [A6  A5  A3  A2  A1  A0]
      * 
      * Constraints (from datasheet)
@@ -22,7 +23,8 @@ uint8_t PCA_getDeviceAddr(int deviceNum){
      */
 
 
-    /* Example addresses, to be changed:
+    /* 
+     * Example addresses, to be changed:
      * Device num   Binary      Hex
      * 1            100 0000    0x40
      * 2            100 0001    0x41
@@ -35,15 +37,11 @@ uint8_t PCA_getDeviceAddr(int deviceNum){
     int lowBound    = 1;
     int upBound     = 7;
 
-    uint8_t addTable [7] ={
-        0x40, 0x41, 0x42, 0x44, 0x48, 0x50, 0x60
-    };
+    uint8_t addTable [7] ={0x40, 0x41, 0x42, 0x44, 0x48, 0x50, 0x60};
 
-    if ( (deviceNum<lowBound) || (deviceNum>upBound) ){
-        return 0x00;
-    }
-    else{
-        return addTable[deviceNum-1];
-    }
+    if ( (deviceNum<lowBound) || (deviceNum>upBound) ) return 0x00;
+    else return addTable[deviceNum-1];
+    
 }
+
 
