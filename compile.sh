@@ -1,1 +1,1 @@
-rm -f ./a.out && gcc $1 && valgrind ./a.out
+rm -f ./a.out && gcc -Wall -pedantic -g $1 && valgrind ./a.out

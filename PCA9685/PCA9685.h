@@ -20,7 +20,7 @@ typedef enum{
 
 #define LED_0_start 6
 #define LED_multiplier 4
-
+#define PCA_address_table {0x40, 0x41, 0x42, 0x44, 0x48, 0x50, 0x60}
 /******************* Master functions (Global perspective)****************************/
 int PCA_master_init(int numDevices, PCA** arrayHeader);                 // called at beginning, return array of (numDevices) PCA structs
 int PCA_master_writePWM(PCA* master, writePWM_state mode);        // ask for input and set specific device/channel/PWM

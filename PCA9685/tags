@@ -1,0 +1,41 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BATCH	PCA9685.h	/^    BATCH=1,$/;"	e	enum:__anon1
+LED_0_start	PCA9685.h	21;"	d
+LED_multiplier	PCA9685.h	22;"	d
+MCP_i2cWrite	PCA9685.c	/^int MCP_i2cWrite(PCA* pointerPCA, unsigned int numBytes, unsigned char* data){$/;"	f
+MCP_i2cWrite_proxy	PCA9685.c	/^int MCP_i2cWrite_proxy(PCA* pointerPCA, unsigned int numBytes, unsigned char* data){$/;"	f
+PCA	PCA9685.h	/^struct PCA{$/;"	s
+PCA	PCA9685.h	/^typedef struct PCA PCA;$/;"	t	typeref:struct:PCA
+PCA_address_table	PCA9685.h	23;"	d
+PCA_calcPWM	PCA9685.c	/^int PCA_calcPWM(PCA* pointerPCA, int channelNum, int pwmVal){$/;"	f
+PCA_getChannelReg	PCA9685.c	/^int PCA_getChannelReg(int chNum, uint8_t* regList){$/;"	f
+PCA_getDeviceAddr	PCA9685.c	/^uint8_t PCA_getDeviceAddr(int deviceNum){$/;"	f
+PCA_getState	PCA9685.c	/^int PCA_getState(PCA*pointerPCA){$/;"	f
+PCA_master_getState	PCA9685.c	/^int PCA_master_getState(PCA* headPCA, int numDevices){$/;"	f
+PCA_master_init	PCA9685.c	/^int PCA_master_init(int numDevices, PCA** arrayHeader){$/;"	f
+PCA_master_restart	PCA9685.c	/^int PCA_master_restart(PCA* master, int numDevices){$/;"	f
+PCA_master_writePWM	PCA9685.c	/^int PCA_master_writePWM(PCA* master , writePWM_state mode){$/;"	f
+PCA_regI2cDriver	PCA9685.c	/^int PCA_regI2cDriver(PCA* pointerPCA, void** mcp_dev){$/;"	f
+PCA_reset	PCA9685.c	/^int PCA_reset(PCA* pointerPCA){$/;"	f
+PCA_setPWM	PCA9685.c	/^int PCA_setPWM(PCA* pointerPCA, int channel, int pwm){$/;"	f
+PCA_writePWM_2channel	PCA9685.c	/^int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){$/;"	f
+PCA_writeReg	PCA9685.c	/^int PCA_writeReg(PCA* pointerPCA, uint8_t regAddr, uint8_t regData){$/;"	f
+SINGLE	PCA9685.h	/^    SINGLE=0,$/;"	e	enum:__anon1
+TOTAL_PCA_NUM	PCA9685.c	9;"	d	file:
+address	PCA9685.h	/^    uint8_t address;$/;"	m	struct:PCA
+calcPWM	PCA9685.c	/^int calcPWM( int PWM, int delay, int width, int* onCount, int* offCount){$/;"	f
+current_channelNum	PCA9685.h	/^    int current_channelNum; \/\/hold current channel of attention$/;"	m	struct:PCA
+current_pwmVal	PCA9685.h	/^    int current_pwmVal;        \/\/ hold pwm value for current channel$/;"	m	struct:PCA
+deviceNum	PCA9685.h	/^    int deviceNum;$/;"	m	struct:PCA
+mcp_dev	PCA9685.h	/^    void** mcp_dev;$/;"	m	struct:PCA
+offCount	PCA9685.h	/^    int offCount[16];$/;"	m	struct:PCA
+onCount	PCA9685.h	/^    int onCount[16];$/;"	m	struct:PCA
+pwmVal	PCA9685.h	/^    int pwmVal[16];$/;"	m	struct:PCA
+roundNo	PCA9685.c	/^int roundNo(float num){ $/;"	f
+writePWM_state	PCA9685.h	/^} writePWM_state;$/;"	t	typeref:enum:__anon1
+zero	PCA9685.c	/^int zero(int* array, int size){$/;"	f

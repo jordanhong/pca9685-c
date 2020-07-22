@@ -12,8 +12,8 @@ int main(void){
     PCA_master_init(7, &pcaDriver);
     PCA_master_writePWM(pcaDriver, SINGLE);
     PCA_master_getState(pcaDriver, 7);
-    PCA_master_restart(pcaDriver, 7);
-    PCA_master_getState(pcaDriver, 7);
+    // PCA_master_restart(pcaDriver, 7);
+    // PCA_master_getState(pcaDriver, 7);
     // PCA_regI7cDriver(pcaDriver, mcp_dev); 
     
     //

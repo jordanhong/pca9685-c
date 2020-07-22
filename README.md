@@ -93,3 +93,9 @@ July 15
     - Current restart is implemented by manually writing 0s. Confirm whether this works, and necessity to use designated pins for global control. 
     - (Potential) Support configuration of different delays from UI. 
 
+July 20 
+- Added define statement for LUT (PCA programmable address)
+- TODO: Add PCA_full_ON (100%) case
+
+July 21
+- Added FULL on case and  verified with proxy

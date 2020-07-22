@@ -219,6 +219,16 @@ int PCA_writePWM_2channel(PCA* pointerPCA, int channelNum, int pwm){
     LED_OFF_HIGH_VAL     = (uint8_t)(( (pointerPCA->offCount)[channelNum-1] >> 8) & 0x0f); // Shift bit 9-12 to lower 4 bits and mask out
 
 
+    // TODO: verifiy in proxy write text file 
+    if (pwm==100){
+        // FULL ON pin is the 4th bit on LED_ON_H register, active high
+        // LED_n_ON [12:0] (onCount)
+        // If LED_n_ON [12] =1 --> ALL ON mode, delay by LED_n_ON [11:0], LED_n_off [12:0] don't care
+        // Therefore, we just need to force a 1 in the 4th bit in LED_ON_HIGH_VAL
+        LED_ON_HIGH_VAL = LED_ON_HIGH_VAL | 0x10;
+
+    }
+
     // Calls PCA_writeReg for each of (LED_ON_LOW, LED_ON_HIGH, LED_OFF_LOW, LED_OFF_HIGH)
 
     PCA_writeReg(pointerPCA, LED_ON_LOW_REG, LED_ON_LOW_VAL);
@@ -261,9 +271,10 @@ int PCA_writeReg(PCA* pointerPCA, uint8_t regAddr, uint8_t regData){
     
     // Write to PCA via MCP
     //MCP_i2cWrite(pointerPCA, (unsigned int)2 , i2cTxData);
-    MCP_i2cWrite_proxy(pointerPCA, (unsigned int)2 , i2cTxData);
-
-    return 0;
+    int r= -1;
+    r = MCP_i2cWrite_proxy(pointerPCA, (unsigned int)2 , i2cTxData);
+    if (r!=0) exit(1);
+    return r;
 }
 
 int MCP_i2cWrite_proxy(PCA* pointerPCA, unsigned int numBytes, unsigned char* data){
@@ -282,13 +293,18 @@ int MCP_i2cWrite_proxy(PCA* pointerPCA, unsigned int numBytes, unsigned char* da
 
 int MCP_i2cWrite(PCA* pointerPCA, unsigned int numBytes, unsigned char* data){
     unsigned char use7bitAddress;
+    int result=-1;
     // For 7 bit address (pointerPCA->address has form 0x01[A5:A0],
     // Enable 7 bit addresss config
     use7bitAddress = 0x01; 
 
     /* Usage: MCP2221_DLL_UM_API int CALLING_CONVENTION Mcp2221_I2cWrite(void* handle, unsigned int bytesToWrite, unsigned char slaveAddress, unsigned char use7bitAddress, unsigned char* i2cTxData);*/
 
-    // Mcp2221_I2cWrite( (pointerPCA->mcp_dev), numBytes, (pointerPCA->address), use7bitAddress, data);
+    // result= Mcp2221_I2cWrite( (pointerPCA->mcp_dev), numBytes, (pointerPCA->address), use7bitAddress, data);
+    //if (result!=0){
+    //    printf("I2C write error, exiting...");
+    //    return -1;
+    //}
     return 0;
 }
     
@@ -304,22 +320,21 @@ uint8_t PCA_getDeviceAddr(int deviceNum){
      *  3. 0000 0110--> Software reset
      */
 
-
     /* 
      * Example addresses, to be changed:
-     * Device num   Binary      Hex
-     * 1            100 0000    0x40
-     * 2            100 0001    0x41
-     * 3            100 0010    0x42
-     * 4            100 0100    0x44
-     * 5            100 1000    0x48
-     * 6            101 0000    0x50
-     * 7            110 0000    0x60
+     * Device num   Binary       Hex
+     * 1            0100 0000    0x40
+     * 2            0100 0001    0x41
+     * 3            0100 0010    0x42
+     * 4            0100 0100    0x44
+     * 5            0100 1000    0x48
+     * 6            0101 0000    0x50
+     * 7            0110 0000    0x60
      */ 
     int lowBound    = 1;
     int upBound     = 7;
 
-    uint8_t addTable [7] ={0x40, 0x41, 0x42, 0x44, 0x48, 0x50, 0x60};
+    uint8_t addTable [7] = PCA_address_table;
 
     if ( (deviceNum<lowBound) || (deviceNum>upBound) ) return 0x00;
     else return addTable[deviceNum-1];
