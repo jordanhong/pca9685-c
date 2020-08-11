@@ -6,7 +6,6 @@
 #include "../IO/io.c"
 //#include "MCP2221A.c"
 
-#define TOTAL_PCA_NUM 7
 /******************* Master functions (Global perspective)****************************/
 int PCA_master_init(int numDevices, PCA** arrayHeader){
     
@@ -278,6 +277,7 @@ int PCA_writeReg(PCA* pointerPCA, uint8_t regAddr, uint8_t regData){
 }
 
 int MCP_i2cWrite_proxy(PCA* pointerPCA, unsigned int numBytes, unsigned char* data){
+    if (pointerPCA==NULL) return -1;
     uint8_t report[5];    
     //report[0] = (uint8_t) *(pointerPCA->mcp_dev); // driver handle
     report[0] = 0x00; // driver handle
@@ -334,6 +334,7 @@ uint8_t PCA_getDeviceAddr(int deviceNum){
     int lowBound    = 1;
     int upBound     = 7;
 
+    // PCA_address_table is defined in PCA9685.h
     uint8_t addTable [7] = PCA_address_table;
 
     if ( (deviceNum<lowBound) || (deviceNum>upBound) ) return 0x00;
