@@ -67,3 +67,39 @@ int writeCommand_2file(const char* path, uint8_t* report, int report_len ){
     return 0;
 
 }
+int readFile_to_array( const char* path, uint8_t* result, int len){
+    FILE    *file;
+
+
+    // Assumes result to be malloc'd
+    if (result==NULL) return -1;
+    file = fopen(path, "r");
+ 
+    // Read in file line by line
+    // Assume hexadecimal context
+    // Stores into array
+    unsigned int num;
+    for (int i=0; i<len; i++){
+        fscanf(file, "%x", &num);
+        // printf("Read in: %x\n", num);
+        
+        // Assign to array element
+        result[i] = (uint8_t) num;
+    }
+
+    fclose(file);
+    return 0;
+
+}
+
+int print_array(uint8_t* array, int len){
+    if (array==NULL) return -1;
+    int i = 0;
+
+    for (i=0;i<len;i++){
+        unsigned int num;
+        num = (unsigned int) array[i];
+        printf("This is the %d element in array: %x.\n", i,num); 
+    }
+    return 0;
+}
