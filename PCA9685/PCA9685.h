@@ -18,7 +18,6 @@ typedef enum{
 
 #define LED_0_start 6
 #define LED_multiplier 4
-#define PCA_address_table {0x40, 0x41, 0x42, 0x44, 0x48, 0x50, 0x60}
 #define TOTAL_PCA_NUM 7
 
 /******************* Master functions (Global perspective)****************************/

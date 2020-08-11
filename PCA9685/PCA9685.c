@@ -22,7 +22,7 @@ int PCA_master_init(int numDevices, PCA** arrayHeader){
     PCA* pointerPCA = NULL;
     for (deviceNum = 0; deviceNum<numDevices; deviceNum++){
         pointerPCA = (*arrayHeader) + deviceNum;
-        pointerPCA->deviceNum = deviceNum;
+        pointerPCA->deviceNum = deviceNum+1;
         pointerPCA->address = PCA_getDeviceAddr(pointerPCA->deviceNum);
         PCA_reset(pointerPCA);
     }
@@ -334,10 +334,17 @@ uint8_t PCA_getDeviceAddr(int deviceNum){
     int lowBound    = 1;
     int upBound     = 7;
 
+    // Read file into address table as array
     // PCA_address_table is defined in PCA9685.h
-    uint8_t addTable [7] = PCA_address_table;
+    const char* path = "addTable.txt";
+    uint8_t addTable [7];
+    readFile_to_array(path, addTable, 7);
+    // print_array(addTable, 7);
 
-    if ( (deviceNum<lowBound) || (deviceNum>upBound) ) return 0x00;
+    if ( (deviceNum<lowBound) || (deviceNum>upBound) ) {
+        printf("Out of range.\n");
+        return 0x00;
+    }
     else return addTable[deviceNum-1];
     
 }
