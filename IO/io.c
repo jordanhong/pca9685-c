@@ -15,9 +15,9 @@ int getUserInput(const char* msg, int* dataAddr, int lowBound, int upBound){
 }
 
 int char_getUserInput(const char* msg, char* dataAddr){
-    //if ( (*dataAddr)=='Y') printf ("You entered Y\n");
-    //else if ( (*dataAddr)=='n') printf ("You entered n\n");
-    //else printf("Not Y or n.\n");
+    if (msg==NULL) return -1;
+    if (dataAddr==NULL) return -1;
+
     printf("%s", msg);
     scanf(" %c", dataAddr);
     while( ((*dataAddr)!='Y') &&  ((*dataAddr)!='n')){
@@ -26,6 +26,7 @@ int char_getUserInput(const char* msg, char* dataAddr){
     }
     return 0;
 }
+
 int check_fileExists(const char * filename){
    /*
      * Check if a file exist using fopen() function
@@ -45,6 +46,8 @@ int check_fileExists(const char * filename){
 int writeCommand_2file(const char* path, uint8_t* report, int report_len ){
     /* report is the I2C package: (uint8_t) [commandMode, len_low_byte, len_high_byte, slave address, data]
      */
+    if (report==NULL) return -1;
+    if (report_len<5) return -1;  
     FILE* fp = NULL;
     int fileExists = -1;
    
@@ -67,6 +70,7 @@ int writeCommand_2file(const char* path, uint8_t* report, int report_len ){
     return 0;
 
 }
+
 int readFile_to_array( const char* path, uint8_t* result, int len){
     FILE    *file;
 
