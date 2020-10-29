@@ -145,7 +145,7 @@ int PCA_getState(PCA*pointerPCA){
         printf("Null device pointer! Aborting.\n");
         return -1;
     }
-    printf("Device No: %d. Device address: 0x%x. \n", (pointerPCA->deviceNum+1), pointerPCA->address);
+    printf("Device No: %d. Device address: 0x%x. \n", (pointerPCA->deviceNum), pointerPCA->address);
     printf("Active channel  |  PWM  | onCount | offCount\n");
     int i = 0;
     for (i=0;i<16;i++){
