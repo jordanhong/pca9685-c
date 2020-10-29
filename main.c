@@ -7,6 +7,7 @@ int main(void){
     // operations with the i7c driver is done with mcp7771_t*
     //void** mcp_dev=NULL; 
     //MCP_init(mcp_dev);
+    // PCA_regI7cDriver(pcaDriver, mcp_dev); 
  
     PCA* pcaDriver=NULL;
     PCA_master_init(7, &pcaDriver);
@@ -14,9 +15,7 @@ int main(void){
     PCA_master_getState(pcaDriver, 7);
     PCA_master_restart(pcaDriver, 7);
     PCA_master_getState(pcaDriver, 7);
-    // PCA_regI7cDriver(pcaDriver, mcp_dev); 
     
-    //
 
     return 0;
 }
